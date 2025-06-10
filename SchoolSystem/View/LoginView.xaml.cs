@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolSystem.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,20 @@ namespace SchoolSystem.View
     /// <summary>
     /// Logika interakcji dla klasy LoginView.xaml
     /// </summary>
-    public partial class LoginView : Window
+    public partial class LoginView : UserControl
     {
         public LoginView()
         {
             InitializeComponent();
+            DataContext = new LoginViewModel();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel vm)
+            {
+                vm.LoginCommand.Execute(PasswordBox.Password);
+            }
         }
     }
 }
