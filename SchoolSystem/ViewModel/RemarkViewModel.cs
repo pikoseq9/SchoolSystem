@@ -8,5 +8,6 @@ namespace SchoolSystem.ViewModel
 {
     internal class RemarkViewModel
     {
+        //kod
     }
 }
