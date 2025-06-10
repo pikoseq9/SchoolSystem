@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.Model
 {
-    internal class User
+    public class User
     {
+        public Enums.UserType UserType { get; set; }
     }
 }

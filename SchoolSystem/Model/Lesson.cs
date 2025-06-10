@@ -16,7 +16,7 @@ namespace SchoolSystem.Model
         public int TeacherID { get; set; }
         public DateTime Date { get; set; }
 
-        public Lessonint id, int roomID, int subjectID, int classID, int teacherID, DateTime date
+        public Lesson(int id, int roomID, int subjectID, int classID, int teacherID, DateTime date)
         {
             Id = id;
             RoomID = roomID;

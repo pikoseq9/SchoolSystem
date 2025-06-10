@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.Model
 {
-    internal class Room
+    public class Room
     {
+        public int ID { get; set; }
+        public string? Number { get; set; }
     }
 }

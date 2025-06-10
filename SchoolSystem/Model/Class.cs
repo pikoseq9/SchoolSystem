@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.Model
 {
-    internal class Class
+    public class Class
     {
+        public int Id { get; set; }
+        public string Code { get; }
+        public int ClassTeacherID { get; set; }
+        public Class(string code, int classTeacherID, int id)
+        {
+            Code = code;
+            ClassTeacherID = classTeacherID;
+            Id = id;
+        }
+        
     }
 }
