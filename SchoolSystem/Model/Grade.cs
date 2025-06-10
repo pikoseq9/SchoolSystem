@@ -13,10 +13,10 @@ namespace SchoolSystem.Model
         public int SubjectID { get; set; }
         public DateTime Date { get; set; }
         public decimal Value { get; set; }
-        public Enums.GradeType Category { get; set; }
+        public string? Category { get; set; }
         public int Weight { get; set; }
 
-        public Grade(int id, int studentID, int subjectID, DateTime date, decimal value, Enums.GradeType category, int weight)
+        public Grade(int id, int studentID, int subjectID, DateTime date, decimal value, string? category, int weight)
         {
             Id = id;
             StudentID = studentID;

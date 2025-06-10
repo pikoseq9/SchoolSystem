@@ -13,11 +13,11 @@ namespace SchoolSystem.Model
         public string? Name { get; set; }
         public string? SurName { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public Enums.Sex? Gender { get; set; }
+        public string? Gender { get; set; }
         public string? PESEL { get; set; }
         public string? Login { get; set; }
         public string? Password { get; set; }
-        public Student(int id, int classID, string? name, string? surName, DateTime? dateOfBirth, Enums.Sex? gender, string? pesel, string? login, string? password)
+        public Student(int id, int classID, string? name, string? surName, DateTime? dateOfBirth, string? gender, string? pesel, string? login, string? password)
         {
             Id = id;
             ClassID = classID;
