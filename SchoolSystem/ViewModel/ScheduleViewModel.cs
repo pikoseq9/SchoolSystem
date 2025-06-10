@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.ViewModel
 {
-    internal class ScheduleViewModel
+    internal class ScheduleViewModel : BaseViewModel
     {
     }
 }
