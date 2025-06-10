@@ -4,9 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolSystem"
-        mc:Ignorable="d"
+        xmlns:viewModels="clr-namespace:SchoolSystem.ViewModel" mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- przycisk -->
+            <RowDefinition Height="*"/>
+            <!-- content -->
+        </Grid.RowDefinitions>
+
+        <Button Content="Logowanie"
+            Command="{Binding ShowLoginPageCommand}"
+            Width="100" Height="30"
+            Background="#FF4CAF50" Foreground="White"
+            Margin="10"/>
+
+        <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
     </Grid>
 </Window>
