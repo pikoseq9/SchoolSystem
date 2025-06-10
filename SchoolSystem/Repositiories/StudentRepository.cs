@@ -138,7 +138,9 @@ namespace SchoolSystem.Repositories
                     }
                 }
             }
-            return null; // nie znaleziono użytkownika
+
+            return null;
         }
+
     }
 }

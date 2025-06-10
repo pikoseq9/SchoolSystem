@@ -13,6 +13,20 @@ namespace SchoolSystem.ViewModel
 {
     public class LoginViewModel : SchoolSystem.ViewModel.BaseClass.BaseViewModel
     {
+        private string _typ_konta;
+        public string typ_konta
+        {
+            get => _typ_konta;
+            set
+            {
+                if (_typ_konta != value)
+                {
+                    _typ_konta = value;
+                    onPropertyChanged(nameof(typ_konta));
+                }
+            }
+        }
+
         public Action OnLoginSuccess { get; set; }
 
         private string _username;
@@ -53,9 +67,6 @@ namespace SchoolSystem.ViewModel
         public LoginViewModel()
         {
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
-            // Inicjalizacja dla testów - możesz ustawić domyślne wartości
-            // Username = "test";
-            // Password = "test"; // To nie jest bezpieczne, ale dla szybkiego testu
 
         }
 
@@ -64,15 +75,38 @@ namespace SchoolSystem.ViewModel
         {
             string passwordFromView = parameter as string;
 
-            var repository = new StudentRepository();
+            var repositorys = new StudentRepository();
+            var repositoryt = new TeacherRepository();
 
             try
             {
-                var student = repository.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
+                var student = repositorys.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
 
                 if (student != null)
                 {
                     ErrorMessage = "Logowanie pomyślne!";
+                    typ_konta = "uczen";
+                    OnLoginSuccess?.Invoke();
+                }
+                else
+                {
+                    ErrorMessage = "Błędny login lub hasło.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Błąd podczas logowania: {ex.Message}";
+            }
+
+
+            try
+            {
+                var student = repositoryt.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
+
+                if (student != null)
+                {
+                    ErrorMessage = "Logowanie pomyślne!";
+                    typ_konta = "nauczyciel";
                     OnLoginSuccess?.Invoke();
                 }
                 else

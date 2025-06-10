@@ -36,7 +36,15 @@ namespace SchoolSystem.ViewModel
 
         public void ShowUserMenuPage()
         {
-            CurrentView = new UserMenu();
+            // zakładamy, że loginView.DataContext jest LoginViewModel
+            if (CurrentView is LoginView loginView && loginView.DataContext is LoginViewModel loginVM)
+            {
+                CurrentView = new UserMenu(loginVM);
+            }
+            else
+            {
+                CurrentView = new UserMenu(null); // lub nowy bez VM
+            }
         }
 
         private void ShowLoginPage()

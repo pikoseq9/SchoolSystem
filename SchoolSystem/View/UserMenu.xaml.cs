@@ -21,9 +21,10 @@ namespace SchoolSystem.View.Dashboards
     /// </summary>
     public partial class UserMenu : UserControl
     {
-        public UserMenu()
+        public UserMenu(LoginViewModel loginVM)
         {
             InitializeComponent();
+            this.DataContext = loginVM;
         }
     }
 }

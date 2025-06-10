@@ -9,6 +9,6 @@
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
     <Grid Background="Wheat">
-        <TextBlock Text="HALOOO"/>
+        <TextBlock Text="{Binding typ_konta}" FontSize="20" Foreground="DarkBlue" />
     </Grid>
 </UserControl>
