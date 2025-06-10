@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.Model
 {
-    internal class Remark
+    public class Remark
     {
+        public int Id { get; set; }
+        public int StudentID { get; set; }
+        public int TeacherID { get; set; }
+        public string? Value { get; set; }
     }
 }
