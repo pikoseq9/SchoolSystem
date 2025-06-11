@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using SchoolSystem.Model;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace SchoolSystem.Repositories
 {
@@ -11,9 +12,9 @@ namespace SchoolSystem.Repositories
         private string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "szkola.db");
 
 
-        public List<Student> GetAllStudents()
+        public ObservableCollection<Student> GetAllStudents()
         {
-            List<Student> students = new List<Student>();
+            ObservableCollection<Student> students = new ObservableCollection<Student>();
 
             using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
             {
