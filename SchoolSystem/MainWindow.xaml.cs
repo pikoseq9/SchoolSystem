@@ -30,7 +30,7 @@ namespace SchoolSystem
 
             DataContext = new MainViewModel();
 
-            TestDatabaseConnectionAndDataLoad();
+            //TestDatabaseConnectionAndDataLoad();
         }
         private void TestDatabaseConnectionAndDataLoad()
         {

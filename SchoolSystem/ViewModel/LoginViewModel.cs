@@ -75,50 +75,37 @@ namespace SchoolSystem.ViewModel
         {
             string passwordFromView = parameter as string;
 
-            var repositorys = new StudentRepository();
-            var repositoryt = new TeacherRepository();
+            var studentRepo = new StudentRepository();
+            var teacherRepo = new TeacherRepository();
 
             try
             {
-                var student = repositorys.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
-
+                var student = studentRepo.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
                 if (student != null)
                 {
-                    ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "uczen";
-                    OnLoginSuccess?.Invoke();
-                }
-                else
-                {
-                    ErrorMessage = "Błędny login lub hasło.";
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Błąd podczas logowania: {ex.Message}";
-            }
-
-
-            try
-            {
-                var student = repositoryt.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
-
-                if (student != null)
-                {
                     ErrorMessage = "Logowanie pomyślne!";
-                    typ_konta = "nauczyciel";
                     OnLoginSuccess?.Invoke();
+                    return; // zakończ po udanym logowaniu
                 }
-                else
+
+                var teacher = teacherRepo.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
+                if (teacher != null)
                 {
-                    ErrorMessage = "Błędny login lub hasło.";
+                    typ_konta = "nauczyciel";
+                    ErrorMessage = "Logowanie pomyślne!";
+                    OnLoginSuccess?.Invoke();
+                    return;
                 }
+
+                ErrorMessage = "Błędny login lub hasło.";
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"Błąd podczas logowania: {ex.Message}";
             }
         }
+
 
         // Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
         private bool CanExecuteLogin(object parameter)
