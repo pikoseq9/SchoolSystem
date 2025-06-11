@@ -1,21 +1,21 @@
-﻿using SchoolSystem.Model;
+﻿using Microsoft.Data.Sqlite;
+using SchoolSystem.Model;
 using SchoolSystem.Repositories;
+using SchoolSystem.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using SchoolSystem.ViewModel;
 using System.Windows.Data;
-using System.Collections.Generic;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Data.Sqlite;
-using System;
-
-using System.IO;
 
 namespace SchoolSystem
 {
@@ -35,13 +35,13 @@ namespace SchoolSystem
         {
             StudentRepository studentrepository = new StudentRepository();
             Graderepository graderepository = new Graderepository();
-            List<Student>? students = new List<Student>();
-            List<Grade>? grades = new List<Grade>();
+            ObservableCollection<Student>? students = new ObservableCollection<Student>();
+            ObservableCollection<Grade>? grades = new ObservableCollection<Grade>();
 
             grades = graderepository.GetAllGrades();
             students = studentrepository.GetAllStudents();
-            MessageBox.Show($"{grades.Count}");
-            MessageBox.Show($"{students.Count}");
+            //MessageBox.Show($"{grades.Count}");
+            //MessageBox.Show($"{students.Count}");
 
         }
     }
