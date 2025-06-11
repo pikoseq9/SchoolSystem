@@ -32,18 +32,23 @@ namespace SchoolSystem.ViewModel
         public MainViewModel()
         {
             ShowLoginPageCommand = new RelayCommand(o => ShowLoginPage(), null);
+
+            ShowLoginPage();
         }
 
-        public void ShowUserMenuPage()
+        public void ShowUserDashboardPage()
         {
-            // zakładamy, że loginView.DataContext jest LoginViewModel
             if (CurrentView is LoginView loginView && loginView.DataContext is LoginViewModel loginVM)
             {
-                CurrentView = new UserMenu(loginVM);
-            }
-            else
-            {
-                CurrentView = new UserMenu(null); // lub nowy bez VM
+                switch (loginVM.typ_konta)
+                {
+                    case "uczen":
+                        CurrentView = new StudentDashboardView(loginVM);
+                        break;
+                    case "nauczyciel":
+                        CurrentView = new TeacherDashboardView(loginVM);
+                        break;
+                }
             }
         }
 
@@ -53,7 +58,7 @@ namespace SchoolSystem.ViewModel
 
             if (loginView.DataContext is LoginViewModel loginVM)
             {
-                loginVM.OnLoginSuccess = ShowUserMenuPage;  // podłącz akcję do przejścia na UserMenu
+                loginVM.OnLoginSuccess = ShowUserDashboardPage;
             }
 
             CurrentView = loginView;
