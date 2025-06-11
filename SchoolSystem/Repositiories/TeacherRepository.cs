@@ -6,13 +6,13 @@ using SchoolSystem.Model;
 
 namespace SchoolSystem.Repositories
 {
-    public class StudentRepository
+    public class TeacherRepository
     {
         private string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "szkola.db");
 
-        public List<Student> GetAllStudents()
+        public List<Teacher> GetAllTeachers()
         {
-            List<Student> students = new List<Student>();
+            List<Teacher> teachers = new List<Teacher>();
 
             using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
             {
@@ -20,7 +20,7 @@ namespace SchoolSystem.Repositories
                 {
                     connection.Open();
 
-                    string query = "SELECT ID_Uczen, Klasa_ID, Imie, Nazwisko, Data_Urodzenia, Plec, PESEL, Login, Haslo FROM Uczniowie";
+                    string query = "SELECT ID_Nauczyciel, Imie, Nazwisko, Data_Urodzenia, Plec, Numer_tel, Login, Haslo FROM Nauczyciele";
 
                     using (SqliteCommand command = new SqliteCommand(query, connection))
                     {
@@ -28,14 +28,13 @@ namespace SchoolSystem.Repositories
                         {
                             while (reader.Read())
                             {
-                                students.Add(new Student(
-                                    id: reader.GetInt32(reader.GetOrdinal("ID_Uczen")),
-                                    classID: reader.GetInt32(reader.GetOrdinal("Klasa_ID")),
+                                teachers.Add(new Teacher(
+                                    id: reader.GetInt32(reader.GetOrdinal("ID_Nauczyciel")),
                                     name: reader.IsDBNull(reader.GetOrdinal("Imie")) ? null : reader.GetString(reader.GetOrdinal("Imie")),
                                     surName: reader.IsDBNull(reader.GetOrdinal("Nazwisko")) ? null : reader.GetString(reader.GetOrdinal("Nazwisko")),
                                     dateOfBirth: reader.IsDBNull(reader.GetOrdinal("Data_Urodzenia")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("Data_Urodzenia")),
                                     gender: reader.IsDBNull(reader.GetOrdinal("Plec")) ? null : reader.GetString(reader.GetOrdinal("Plec")),
-                                    pesel: reader.IsDBNull(reader.GetOrdinal("PESEL")) ? null : reader.GetString(reader.GetOrdinal("PESEL")),
+                                    phoneNumber: reader.IsDBNull(reader.GetOrdinal("Numer_tel")) ? null : reader.GetString(reader.GetOrdinal("Numer_tel")),
                                     login: reader.IsDBNull(reader.GetOrdinal("Login")) ? null : reader.GetString(reader.GetOrdinal("Login")),
                                     password: reader.IsDBNull(reader.GetOrdinal("Haslo")) ? null : reader.GetString(reader.GetOrdinal("Haslo"))
                                 ));
@@ -55,36 +54,35 @@ namespace SchoolSystem.Repositories
                     throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych uczniów.", ex);
                 }
             }
-            return students;
+            return teachers;
         }
 
-        public Student? GetStudentById(int studentId)
+        public Teacher? GetTeacherById(int teacherId)
         {
-            Student? student = null;
+            Teacher? teacher = null;
 
             using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
             {
                 try
                 {
                     connection.Open();
-                    string query = "SELECT ID_Uczen, Klasa_ID, Imie, Nazwisko, Data_Urodzenia, Plec, PESEL, Login, Haslo FROM Uczniowie WHERE ID_Uczen = @Id";
+                    string query = "SELECT ID_Nauczyciel, Imie, Nazwisko, Data_Urodzenia, Plec, Numer_tel, Login, Haslo FROM Nauczyciele WHERE ID_Nauczyciel = @Id";
 
                     using (SqliteCommand command = new SqliteCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Id", studentId);
+                        command.Parameters.AddWithValue("@Id", teacherId);
 
                         using (SqliteDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                student = new Student(
-                                    id: reader.GetInt32(reader.GetOrdinal("ID_Uczen")),
-                                    classID: reader.GetInt32(reader.GetOrdinal("Klasa_ID")),
+                                teacher = new Teacher(
+                                    id: reader.GetInt32(reader.GetOrdinal("ID_Nauczyciel")),
                                     name: reader.IsDBNull(reader.GetOrdinal("Imie")) ? null : reader.GetString(reader.GetOrdinal("Imie")),
                                     surName: reader.IsDBNull(reader.GetOrdinal("Nazwisko")) ? null : reader.GetString(reader.GetOrdinal("Nazwisko")),
                                     dateOfBirth: reader.IsDBNull(reader.GetOrdinal("Data_Urodzenia")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("Data_Urodzenia")),
                                     gender: reader.IsDBNull(reader.GetOrdinal("Plec")) ? null : reader.GetString(reader.GetOrdinal("Plec")),
-                                    pesel: reader.IsDBNull(reader.GetOrdinal("PESEL")) ? null : reader.GetString(reader.GetOrdinal("PESEL")),
+                                    phoneNumber: reader.IsDBNull(reader.GetOrdinal("Numer_tel")) ? null : reader.GetString(reader.GetOrdinal("Numer_tel")),
                                     login: reader.IsDBNull(reader.GetOrdinal("Login")) ? null : reader.GetString(reader.GetOrdinal("Login")),
                                     password: reader.IsDBNull(reader.GetOrdinal("Haslo")) ? null : reader.GetString(reader.GetOrdinal("Haslo"))
                                 );
@@ -94,16 +92,16 @@ namespace SchoolSystem.Repositories
                 }
                 catch (SqliteException ex)
                 {
-                    Console.WriteLine($"Błąd bazy danych podczas pobierania studenta o ID {studentId}: {ex.Message}");
-                    throw new Exception($"Nie udało się pobrać studenta o ID {studentId}.", ex);
+                    Console.WriteLine($"Błąd bazy danych podczas pobierania studenta o ID {teacherId}: {ex.Message}");
+                    throw new Exception($"Nie udało się pobrać studenta o ID {teacherId}.", ex);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {studentId}: {ex.Message}");
-                    throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {studentId}.", ex);
+                    Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {teacherId}: {ex.Message}");
+                    throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {teacherId}.", ex);
                 }
             }
-            return student;
+            return teacher;
         }
     }
 }
