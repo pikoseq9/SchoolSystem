@@ -58,9 +58,9 @@ namespace SchoolSystem.Repositories
             return students;
         }
 
-        public Student GetStudentById(int studentId)
+        public Student? GetStudentById(int studentId)
         {
-            Student student = null;
+            Student? student = null;
 
             using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
             {

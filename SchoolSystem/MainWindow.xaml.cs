@@ -13,7 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.Sqlite;
-using System;
+using System.IO;
+using SchoolSystem.View;
 
 using System.IO;
 
@@ -27,10 +28,6 @@ namespace SchoolSystem
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new MainViewModel();
-
-            TestDatabaseConnectionAndDataLoad();
         }
         private void TestDatabaseConnectionAndDataLoad()
         {
