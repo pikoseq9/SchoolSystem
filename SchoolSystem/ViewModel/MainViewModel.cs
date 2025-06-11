@@ -58,7 +58,7 @@ namespace SchoolSystem.ViewModel
 
             if (loginView.DataContext is LoginViewModel loginVM)
             {
-                loginVM.OnLoginSuccess = ShowUserDashboardPage; 
+                loginVM.OnLoginSuccess = ShowUserDashboardPage;
             }
 
             CurrentView = loginView;

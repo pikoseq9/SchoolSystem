@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Data.Sqlite;
@@ -139,6 +139,38 @@ namespace SchoolSystem.Repositories
                 }
             }
 
+            return null;
+        }
+
+        public Student GetStudentByLoginOnly(string login)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                string query = "SELECT * FROM Uczniowie WHERE Login = @login";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@login", login);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Student(
+                                id: reader.GetInt32(reader.GetOrdinal("ID_Uczen")),
+                                classID: reader.GetInt32(reader.GetOrdinal("Klasa_ID")),
+                                name: reader.GetString(reader.GetOrdinal("Imie")),
+                                surName: reader.GetString(reader.GetOrdinal("Nazwisko")),
+                                dateOfBirth: reader.GetDateTime(reader.GetOrdinal("Data_Urodzenia")),
+                                gender: reader.GetString(reader.GetOrdinal("Plec")),
+                                pesel: reader.GetString(reader.GetOrdinal("PESEL")),
+                                login: reader.GetString(reader.GetOrdinal("Login")),
+                                password: reader.GetString(reader.GetOrdinal("Haslo")) // tu hash
+                            );
+                        }
+                    }
+                }
+            }
             return null;
         }
 

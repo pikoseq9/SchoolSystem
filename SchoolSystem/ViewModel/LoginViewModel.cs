@@ -80,17 +80,18 @@ namespace SchoolSystem.ViewModel
 
             try
             {
-                var student = studentRepo.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
-                if (student != null)
+                var student = studentRepo.GetStudentByLoginOnly(Username?.Trim());
+                if (student != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), student.Password))
                 {
                     typ_konta = "uczen";
                     ErrorMessage = "Logowanie pomyślne!";
                     OnLoginSuccess?.Invoke();
-                    return; // zakończ po udanym logowaniu
+                    return;
                 }
 
-                var teacher = teacherRepo.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
-                if (teacher != null)
+
+                var teacher = teacherRepo.GetTeacherByLoginOnly(Username?.Trim());
+                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
                 {
                     typ_konta = "nauczyciel";
                     ErrorMessage = "Logowanie pomyślne!";
@@ -148,4 +149,3 @@ namespace SchoolSystem.ViewModel
         }
     }
 }
-
