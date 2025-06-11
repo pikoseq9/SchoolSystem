@@ -8,7 +8,8 @@ namespace SchoolSystem.Repositories
 {
     public class StudentRepository
     {
-        private string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "szkola.db");
+        private string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "szkola.db");
+
 
         public List<Student> GetAllStudents()
         {
