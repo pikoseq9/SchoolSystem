@@ -58,7 +58,8 @@ namespace SchoolSystem.ViewModel
 
             CurrentView = loginView;
         }
-    }
+
+}
 
 
 }
