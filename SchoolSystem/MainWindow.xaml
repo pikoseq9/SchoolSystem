@@ -10,8 +10,21 @@
     <Window.DataContext>
         <viewModels:MainViewModel/>
     </Window.DataContext>
-
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- przycisk -->
+            <RowDefinition Height="*"/>
+            <!-- content -->
+        </Grid.RowDefinitions>
+
+        <Button Content="Logowanie"
+            Command="{Binding ShowLoginPageCommand}"
+            Width="100" Height="30"
+            Background="#FF4CAF50" Foreground="White"
+            Margin="10"/>
+
         <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
     </Grid>
 </Window>

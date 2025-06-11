@@ -75,38 +75,50 @@ namespace SchoolSystem.ViewModel
         {
             string passwordFromView = parameter as string;
 
-            var studentRepo = new StudentRepository();
-            var teacherRepo = new TeacherRepository();
+            var repositorys = new StudentRepository();
+            var repositoryt = new TeacherRepository();
 
             try
             {
-                var student = studentRepo.GetStudentByLoginOnly(Username?.Trim());
-                if (student != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), student.Password))
+                var student = repositorys.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
+
+                if (student != null)
                 {
+                    ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "uczen";
-                    ErrorMessage = "Logowanie pomyślne!";
                     OnLoginSuccess?.Invoke();
-                    return;
                 }
-
-
-                var teacher = teacherRepo.GetTeacherByLoginOnly(Username?.Trim());
-                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
+                else
                 {
-                    typ_konta = "nauczyciel";
-                    ErrorMessage = "Logowanie pomyślne!";
-                    OnLoginSuccess?.Invoke();
-                    return;
+                    ErrorMessage = "Błędny login lub hasło.";
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Błąd podczas logowania: {ex.Message}";
+            }
 
-                ErrorMessage = "Błędny login lub hasło.";
+
+            try
+            {
+                var student = repositoryt.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
+
+                if (student != null)
+                {
+                    ErrorMessage = "Logowanie pomyślne!";
+                    typ_konta = "nauczyciel";
+                    OnLoginSuccess?.Invoke();
+                }
+                else
+                {
+                    ErrorMessage = "Błędny login lub hasło.";
+                }
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"Błąd podczas logowania: {ex.Message}";
             }
         }
-
 
         // Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
         private bool CanExecuteLogin(object parameter)
@@ -149,3 +161,4 @@ namespace SchoolSystem.ViewModel
         }
     }
 }
+

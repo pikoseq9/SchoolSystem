@@ -27,96 +27,22 @@ namespace SchoolSystem
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
 
-            HashAllStudentPasswords();
-            HashAllTeacherPasswords();
+            TestDatabaseConnectionAndDataLoad();
         }
 
-        public static void HashAllStudentPasswords()
+        private void TestDatabaseConnectionAndDataLoad()
         {
-            var repo = new StudentRepository();
-            var students = repo.GetAllStudents();
+            StudentRepository studentrepository = new StudentRepository();
+            Graderepository graderepository = new Graderepository();
+            List<Student>? students = new List<Student>();
+            List<Grade>? grades = new List<Grade>();
 
-            if (students.Count == 0)
-            {
-                MessageBox.Show("Brak uczniów w bazie.");
-                return;
-            }
+            grades = graderepository.GetAllGrades();
+            students = studentrepository.GetAllStudents();
+            MessageBox.Show($"{grades.Count}");
+            MessageBox.Show($"{students.Count}");
 
-            int updatedCount = 0;
-
-            using (var connection = new SqliteConnection("Data Source=szkola.db"))
-            {
-                connection.Open();
-
-                foreach (var student in students)
-                {
-                    var plainPassword = student.Password;
-
-                    // Pomijamy brak hasła lub już wyglądające na hash
-                    if (string.IsNullOrWhiteSpace(plainPassword) || plainPassword.Length > 20)
-                        continue;
-
-                    var hashedPassword = PasswordHelper.HashPassword(plainPassword);
-
-                    string updateQuery = "UPDATE Uczniowie SET Haslo = @hashed WHERE ID_Uczen = @id";
-                    using (var command = new SqliteCommand(updateQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@hashed", hashedPassword);
-                        command.Parameters.AddWithValue("@id", student.Id);
-
-                        int rows = command.ExecuteNonQuery();
-                        if (rows > 0)
-                            updatedCount++;
-                    }
-                }
-            }
-
-            MessageBox.Show($"Zakończono. Zahashowano {updatedCount} hasł(a/u).");
-        }
-
-        public static void HashAllTeacherPasswords()
-        {
-            var repo = new TeacherRepository();
-            var teachers = repo.GetAllTeachers();
-
-            if (teachers.Count == 0)
-            {
-                MessageBox.Show("Brak nauczycieli w bazie.");
-                return;
-            }
-
-            int updatedCount = 0;
-
-            using (var connection = new SqliteConnection("Data Source=szkola.db"))
-            {
-                connection.Open();
-
-                foreach (var teacher in teachers)
-                {
-                    var plainPassword = teacher.Password;
-
-                    // Pomijamy brak hasła lub już wyglądające na hash
-                    if (string.IsNullOrWhiteSpace(plainPassword) || plainPassword.Length > 20)
-                        continue;
-
-                    var hashedPassword = PasswordHelper.HashPassword(plainPassword);
-
-                    string updateQuery = "UPDATE Nauczyciele SET Haslo = @hashed WHERE ID_Nauczyciel = @id";
-                    using (var command = new SqliteCommand(updateQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@hashed", hashedPassword);
-                        command.Parameters.AddWithValue("@id", teacher.Id);
-
-                        int rows = command.ExecuteNonQuery();
-                        if (rows > 0)
-                            updatedCount++;
-                    }
-                }
-            }
-
-            MessageBox.Show($"Zakończono. Zahashowano {updatedCount} hasł(a/u) nauczycieli.");
         }
     }
 }

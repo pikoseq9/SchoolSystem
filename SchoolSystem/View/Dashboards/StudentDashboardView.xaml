@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SchoolSystem.View.Dashboards"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Wheat">
-        <TextBlock Text="studentdashboard"/>
+    <Grid>
+            
     </Grid>
 </UserControl>

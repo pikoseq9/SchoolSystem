@@ -1,5 +1,4 @@
-﻿using SchoolSystem.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,10 +20,9 @@ namespace SchoolSystem.View.Dashboards
     /// </summary>
     public partial class TeacherDashboardView : UserControl
     {
-        public TeacherDashboardView(LoginViewModel loginVM)
+        public TeacherDashboardView()
         {
             InitializeComponent();
-            this.DataContext = loginVM;
         }
     }
 }
