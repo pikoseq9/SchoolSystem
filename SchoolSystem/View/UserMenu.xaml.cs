@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolSystem.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,10 @@ namespace SchoolSystem.View.Dashboards
     /// </summary>
     public partial class UserMenu : UserControl
     {
-        public UserMenu()
+        public UserMenu(LoginViewModel loginVM)
         {
             InitializeComponent();
+            this.DataContext = loginVM;
         }
     }
 }

@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.Model
 {
-    internal class Enums
+    public static class Enums
     {
         //np. typy użytkownika, ocen itp
-
+        public enum UserType
+        {
+            Principal,
+            Teacher,
+            Student
+        }
     }
 }

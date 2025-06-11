@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.Model
 {
-    internal class Schedule
+    public class Schedule
     {
     }
 }
