@@ -13,8 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.Sqlite;
-using System.IO;
-using SchoolSystem.View;
+using System;
 
 using System.IO;
 
@@ -28,7 +27,10 @@ namespace SchoolSystem
         public MainWindow()
         {
             InitializeComponent();
+
+            TestDatabaseConnectionAndDataLoad();
         }
+
         private void TestDatabaseConnectionAndDataLoad()
         {
             StudentRepository repository = new StudentRepository();

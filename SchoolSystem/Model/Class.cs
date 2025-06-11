@@ -17,6 +17,6 @@ namespace SchoolSystem.Model
             ClassTeacherID = classTeacherID;
             Id = id;
         }
-
+        
     }
 }
