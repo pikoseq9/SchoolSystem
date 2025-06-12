@@ -46,13 +46,13 @@ namespace SchoolSystem.Repositories
                 catch (SqliteException ex)
                 {
                     Console.WriteLine($"Błąd bazy danych: {ex.Message}");
-                    throw new Exception("Nie udało się pobrać danych uczniów z bazy.", ex);
+                    throw new Exception("Nie udało się pobrać danych nauczycieli z bazy.", ex);
                 }
                 catch (Exception ex)
                 {
                     // Obsługa innych, ogólnych błędów
                     Console.WriteLine($"Wystąpił nieoczekiwany błąd: {ex.Message}");
-                    throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych uczniów.", ex);
+                    throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych nauczycieli.", ex);
                 }
             }
             return teachers;
@@ -93,13 +93,13 @@ namespace SchoolSystem.Repositories
                 }
                 catch (SqliteException ex)
                 {
-                    Console.WriteLine($"Błąd bazy danych podczas pobierania studenta o ID {teacherId}: {ex.Message}");
+                    Console.WriteLine($"Błąd bazy danych podczas pobierania nauczycieli o ID {teacherId}: {ex.Message}");
                     throw new Exception($"Nie udało się pobrać studenta o ID {teacherId}.", ex);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {teacherId}: {ex.Message}");
-                    throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {teacherId}.", ex);
+                    Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania nauczyciela ID {teacherId}: {ex.Message}");
+                    throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania nauczycieli o ID {teacherId}.", ex);
                 }
             }
             return teacher;
