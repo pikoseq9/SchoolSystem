@@ -7,21 +7,6 @@
              xmlns:vm="clr-namespace:SchoolSystem.ViewModel"  xmlns:pages="clr-namespace:SchoolSystem.View.Pages" mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900"
              d:DataContext="{d:DesignInstance Type=vm:StudentDashboardViewModel}">
-
-    <UserControl.Resources>
-        <DataTemplate DataType="{x:Type vm:GradesViewModel}">
-            <pages:GradesPage />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vm:ScheduleViewModel}">
-            <pages:SchedulePage />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vm:RemarkViewModel}">
-            <pages:RemarkPage />
-        </DataTemplate>
-    </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,11 +14,26 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Oceny"  Command="{Binding NavigateToGradesCommand}" Margin="5"/>
-            <Button Content="Plan Lekcji"  Command="{Binding NavigateToRemarksCommand}" Margin="5"/>
-            <Button Content="Uwagi" Command="{Binding NavigateToScheduleCommand}" Margin="5"/>
+            <Button Content="Oceny" Command="{Binding NavigateToGradesCommand}" />
+            <Button Content="Plan Lekcji" Command="{Binding NavigateToScheduleCommand}" />
+            <Button Content="Uwagi" Command="{Binding NavigateToRemarksCommand}" />
         </StackPanel>
 
-        <ContentControl Grid.Row="1"  Margin="10"/>
+        <ContentControl Grid.Row="1" Margin="10"
+                Content="{Binding CurrentStudentDetailViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vm:GradesViewModel}">
+                    <pages:GradesPage />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ScheduleViewModel}">
+                    <pages:SchedulePage />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:RemarkViewModel}">
+                    <pages:RemarkPage />
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+
     </Grid>
+
 </UserControl>

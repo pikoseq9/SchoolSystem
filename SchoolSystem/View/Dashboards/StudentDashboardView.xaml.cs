@@ -25,6 +25,8 @@ namespace SchoolSystem.View.Dashboards
         {
             InitializeComponent();
             this.DataContext = new StudentDashboardViewModel();
+            
+
         }
     }
 }
