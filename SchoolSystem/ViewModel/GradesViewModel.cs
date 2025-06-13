@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SchoolSystem.Model;
 using SchoolSystem.Repositories;
-using SchoolSystem.ViewModel.BaseClass;
 
 namespace SchoolSystem.ViewModel
 {
@@ -21,7 +20,7 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _grades = value;
-                onPropertyChanged(nameof(Grades));
+                OnPropertyChanged(nameof(Grades));
             }
         }
 
