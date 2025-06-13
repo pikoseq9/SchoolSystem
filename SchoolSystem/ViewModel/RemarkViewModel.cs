@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.ViewModel
 {
-    internal class RemarkViewModel
+    internal class RemarkViewModel : BaseViewModel
     {
     }
 }

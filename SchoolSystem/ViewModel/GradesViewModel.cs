@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolSystem.ViewModel.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SchoolSystem.Model;
