@@ -29,7 +29,7 @@ namespace SchoolSystem.ViewModel
             _graderepository = new Graderepository();
             _grades = new ObservableCollection<Grade>();
 
-            _currentStudentId = 1; //testowe zanim nie ogarniemy przekazywania danych o zalogowanym userze
+            _currentStudentId = 11; //testowe zanim nie ogarniemy przekazywania danych o zalogowanym userze
 
             try
             {

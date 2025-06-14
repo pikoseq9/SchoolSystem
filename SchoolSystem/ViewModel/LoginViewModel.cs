@@ -85,9 +85,9 @@ namespace SchoolSystem.ViewModel
 
             try
             {
-                var student = repositorys.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
+                var student = repositorys.GetStudentByLogin(Username?.Trim());
 
-                if (student != null)
+                if (student != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), student.Password))
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "uczen";
@@ -106,9 +106,9 @@ namespace SchoolSystem.ViewModel
 
             try
             {
-                var student = repositoryt.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
+                var teacher = repositoryt.GetTeacherByLogin(Username?.Trim());
 
-                if (student != null)
+                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "nauczyciel";

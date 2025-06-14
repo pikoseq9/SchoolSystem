@@ -108,18 +108,17 @@ namespace SchoolSystem.Repositories
             return student;
         }
 
-        public Student GetStudentByLogin(string login, string password)
+        public Student GetStudentByLogin(string login)
         {
             using (var connection = new SqliteConnection($"Data Source={dbPath}"))
             {
                 connection.Open();
                 string query = "SELECT ID_Uczen, Klasa_ID, Imie, Nazwisko, Data_Urodzenia, Plec, PESEL, Login, Haslo " +
-                               "FROM Uczniowie WHERE Login = @login AND Haslo = @password";
+                               "FROM Uczniowie WHERE Login = @login";
 
                 using (var command = new SqliteCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@login", login);
-                    command.Parameters.AddWithValue("@password", password);
 
                     using (var reader = command.ExecuteReader())
                     {
