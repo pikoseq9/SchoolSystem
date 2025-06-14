@@ -22,7 +22,13 @@ namespace SchoolSystem.Repositories
                 {
                     connection.Open();
 
-                    string query = "SELECT ID_Uczen, Klasa_ID, Imie, Nazwisko, Data_Urodzenia, Plec, PESEL, Login, Haslo FROM Uczniowie";
+                    string query = @"
+                    SELECT 
+                        u.ID_Uczen, u.Klasa_ID, u.Imie, u.Nazwisko, 
+                        u.Data_Urodzenia, u.Plec, u.PESEL, u.Login, u.Haslo,
+                        k.Kod
+                    FROM Uczniowie u
+                    LEFT JOIN Klasy k ON u.Klasa_ID = k.ID_Klasa";
 
                     using (SqliteCommand command = new SqliteCommand(query, connection))
                     {
@@ -30,7 +36,7 @@ namespace SchoolSystem.Repositories
                         {
                             while (reader.Read())
                             {
-                                students.Add(new Student(
+                                var student = new Student(
                                     id: reader.GetInt32(reader.GetOrdinal("ID_Uczen")),
                                     classID: reader.GetInt32(reader.GetOrdinal("Klasa_ID")),
                                     name: reader.IsDBNull(reader.GetOrdinal("Imie")) ? null : reader.GetString(reader.GetOrdinal("Imie")),
@@ -40,7 +46,11 @@ namespace SchoolSystem.Repositories
                                     pesel: reader.IsDBNull(reader.GetOrdinal("PESEL")) ? null : reader.GetString(reader.GetOrdinal("PESEL")),
                                     login: reader.IsDBNull(reader.GetOrdinal("Login")) ? null : reader.GetString(reader.GetOrdinal("Login")),
                                     password: reader.IsDBNull(reader.GetOrdinal("Haslo")) ? null : reader.GetString(reader.GetOrdinal("Haslo"))
-                                ));
+                                );
+
+                                student.ClassCode = reader.IsDBNull(reader.GetOrdinal("Kod")) ? null : reader.GetString(reader.GetOrdinal("Kod"));
+
+                                students.Add(student);
                             }
                         }
                     }
@@ -52,11 +62,11 @@ namespace SchoolSystem.Repositories
                 }
                 catch (Exception ex)
                 {
-                    // Obsługa innych, ogólnych błędów
                     Console.WriteLine($"Wystąpił nieoczekiwany błąd: {ex.Message}");
                     throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych uczniów.", ex);
                 }
             }
+
             return students;
         }
 
