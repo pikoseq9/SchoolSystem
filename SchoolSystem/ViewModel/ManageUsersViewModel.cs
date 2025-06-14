@@ -17,6 +17,18 @@ namespace SchoolSystem.ViewModel
     public class ManageUsersViewModel : BaseViewModel
     {
         private readonly StudentRepository _studentRepository = new StudentRepository();
+        private readonly ClassRepository _classRepository = new ClassRepository();
+
+        private ObservableCollection<Class> _classes;
+        public ObservableCollection<Class> Classes
+        {
+            get => _classes;
+            set
+            {
+                _classes = value;
+                OnPropertyChanged(nameof(Classes));
+            }
+        }
 
         private ObservableCollection<Student> _students;
         public ObservableCollection<Student> Students
@@ -60,15 +72,22 @@ namespace SchoolSystem.ViewModel
         {
             try
             {
-                var studentsFromDb = _studentRepository.GetAllStudents(); // metoda pobierająca uczniów z repozytorium
+                var studentsFromDb = _studentRepository.GetAllStudents();
+                var classesFromDb = _classRepository.GetAllClasses();
+
+                foreach (var student in studentsFromDb)
+                {
+                    student.Class = classesFromDb.FirstOrDefault(c => c.Id == student.ClassID);
+                }
+
                 Students = new ObservableCollection<Student>(studentsFromDb);
             }
             catch (Exception ex)
             {
-                // Obsłuż błąd ładowania danych
                 MessageBox.Show($"Błąd ładowania uczniów: {ex.Message}");
             }
         }
+
 
         private void EditStudent()
         {

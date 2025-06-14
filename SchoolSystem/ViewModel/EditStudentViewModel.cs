@@ -2,6 +2,7 @@
 using SchoolSystem.Repositories;
 using SchoolSystem.ViewModel.BaseClass;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +13,20 @@ namespace SchoolSystem.ViewModel
     {
         private Student _student;
         private StudentRepository _studentRepository;
+        private ClassRepository _classRepository = new ClassRepository();
 
+        public ObservableCollection<Class> AvailableClasses { get; } = new ObservableCollection<Class>();
+
+        private Class _selectedClass;
+        public Class SelectedClass
+        {
+            get => _selectedClass;
+            set
+            {
+                _selectedClass = value;
+                OnPropertyChanged(nameof(SelectedClass));
+            }
+        }
         public string Name
         {
             get => _student.Name;
@@ -65,6 +79,21 @@ namespace SchoolSystem.ViewModel
 
             SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Cancel);
+
+            LoadClasses();
+
+            if (_student.ClassID != 0)
+            {
+                SelectedClass = AvailableClasses.FirstOrDefault(c => c.Id == _student.ClassID);
+            }
+        }
+
+        private void LoadClasses()
+        {
+            var classes = _classRepository.GetAllClasses();
+            AvailableClasses.Clear();
+            foreach (var c in classes)
+                AvailableClasses.Add(c);
         }
 
         private void Save()
@@ -86,6 +115,14 @@ namespace SchoolSystem.ViewModel
                 MessageBox.Show("PESEL musi składać się z dokładnie 11 cyfr.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            if (SelectedClass == null)
+            {
+                MessageBox.Show("Wybierz klasę.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            _student.ClassID = SelectedClass.Id;
 
             if (string.IsNullOrEmpty(Login))
             {

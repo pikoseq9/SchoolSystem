@@ -16,7 +16,7 @@
           Margin="0,0,0,10">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Klasa" Width="50" DisplayMemberBinding="{Binding ClassName}" />
                     <GridViewColumn Header="Imię" Width="120" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="Nazwisko" Width="120" DisplayMemberBinding="{Binding SurName}" />
                     <GridViewColumn Header="Data urodzenia" Width="120" DisplayMemberBinding="{Binding DateOfBirth, StringFormat=d}" />

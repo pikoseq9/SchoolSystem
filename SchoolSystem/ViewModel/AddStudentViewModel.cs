@@ -2,10 +2,8 @@
 using SchoolSystem.Repositories;
 using SchoolSystem.ViewModel.BaseClass;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,10 +11,22 @@ namespace SchoolSystem.ViewModel
 {
     public class AddStudentViewModel : BaseViewModel
     {
-        private Student _student = new Student(); // pusty student
+        private Student _student = new Student();
 
         private StudentRepository _studentRepository = new StudentRepository();
+        private ClassRepository _classRepository = new ClassRepository();
 
+        // Kolekcja klas do wyboru w UI
+        public ObservableCollection<Class> AvailableClasses { get; } = new ObservableCollection<Class>();
+
+        private Class _selectedClass;
+        public Class SelectedClass
+        {
+            get => _selectedClass;
+            set { _selectedClass = value; OnPropertyChanged(nameof(SelectedClass)); }
+        }
+
+        // Dane studenta
         public string Name
         {
             get => _student.Name;
@@ -52,12 +62,8 @@ namespace SchoolSystem.ViewModel
             get => _student.Password;
             set { _student.Password = value; OnPropertyChanged(nameof(Password)); }
         }
-        public int ClassID
-        {
-            get => _student.ClassID;
-            set { _student.ClassID = value; OnPropertyChanged(nameof(ClassID)); }
-        }
 
+        // Komendy
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -65,28 +71,50 @@ namespace SchoolSystem.ViewModel
         {
             SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Cancel);
+
+            LoadClasses();
+        }
+
+        private void LoadClasses()
+        {
+            var classes = _classRepository.GetAllClasses();
+            AvailableClasses.Clear();
+            foreach (var c in classes)
+                AvailableClasses.Add(c);
+
+            // Opcjonalnie ustaw domyślnie pierwszą klasę
+            if (AvailableClasses.Count > 0)
+                SelectedClass = AvailableClasses[0];
         }
 
         private void Save()
         {
+            // Walidacja pól, możesz rozszerzyć o inne
             if (string.IsNullOrWhiteSpace(Name) || !Name.All(char.IsLetter))
             {
                 MessageBox.Show("Imię musi być wypełnione i zawierać tylko litery.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
             if (string.IsNullOrWhiteSpace(SurName) || !SurName.All(char.IsLetter))
             {
                 MessageBox.Show("Nazwisko musi być wypełnione i zawierać tylko litery.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
             if (string.IsNullOrEmpty(PESEL) || PESEL.Length != 11 || !PESEL.All(char.IsDigit))
             {
                 MessageBox.Show("PESEL musi składać się z dokładnie 11 cyfr.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
+            if (SelectedClass == null)
+            {
+                MessageBox.Show("Wybierz klasę.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (Gender == null)
+            {
+                MessageBox.Show("Wybierz płeć.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             if (string.IsNullOrEmpty(Login))
             {
                 MessageBox.Show("Login nie może być pusty.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -102,6 +130,9 @@ namespace SchoolSystem.ViewModel
             var hashedPassword = PasswordHelper.HashPassword(Password);
             _student.Password = hashedPassword;
 
+            // Przypisujemy ID klasy wybranej przez użytkownika
+            _student.ClassID = SelectedClass.Id;
+
             _studentRepository.AddStudent(_student);
             CloseRequested?.Invoke(this, true);
         }
@@ -113,5 +144,4 @@ namespace SchoolSystem.ViewModel
 
         public event EventHandler<bool> CloseRequested;
     }
-
 }

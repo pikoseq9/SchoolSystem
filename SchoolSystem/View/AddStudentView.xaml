@@ -32,9 +32,14 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,5">
             <Label Content="Płeć:" Width="90"/>
-            <ComboBox Width="200" SelectedItem="{Binding Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <ComboBoxItem>M</ComboBoxItem>
-                <ComboBoxItem>K</ComboBoxItem>
+            <ComboBox Width="200"
+          SelectedItem="{Binding Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemsSource>
+                    <x:Array Type="{x:Type sys:String}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <sys:String>Mężczyzna</sys:String>
+                        <sys:String>Kobieta</sys:String>
+                    </x:Array>
+                </ComboBox.ItemsSource>
             </ComboBox>
         </StackPanel>
 
@@ -45,7 +50,10 @@
 
         <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,5">
             <Label Content="Klasa:" Width="90"/>
-            <TextBox Text="{Binding ClassID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+            <ComboBox Width="200"
+                  ItemsSource="{Binding AvailableClasses}"
+                  SelectedItem="{Binding SelectedClass, Mode=TwoWay}"
+                  DisplayMemberPath="Code" />
         </StackPanel>
 
         <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,0,0,5">

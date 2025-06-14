@@ -12,6 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
@@ -31,9 +32,14 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,5">
             <Label Content="Płeć:" Width="70"/>
-            <ComboBox SelectedItem="{Binding Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200">
-                <ComboBoxItem>M</ComboBoxItem>
-                <ComboBoxItem>K</ComboBoxItem>
+            <ComboBox Width="200"
+          SelectedItem="{Binding Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemsSource>
+                    <x:Array Type="{x:Type sys:String}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <sys:String>Mężczyzna</sys:String>
+                        <sys:String>Kobieta</sys:String>
+                    </x:Array>
+                </ComboBox.ItemsSource>
             </ComboBox>
         </StackPanel>
 
@@ -43,11 +49,19 @@
         </StackPanel>
 
         <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,5">
+            <Label Content="Klasa:" Width="70"/>
+            <ComboBox Width="200"
+              ItemsSource="{Binding AvailableClasses}"
+              SelectedItem="{Binding SelectedClass, Mode=TwoWay}"
+              DisplayMemberPath="Code"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,0,0,5">
             <Label Content="Login:" Width="70"/>
             <TextBox Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}"/>
             <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}"/>
         </StackPanel>
