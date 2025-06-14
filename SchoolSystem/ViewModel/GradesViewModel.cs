@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SchoolSystem.ViewModel.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SchoolSystem.Model;
 using SchoolSystem.Repositories;
-using SchoolSystem.ViewModel.BaseClass;
 
 namespace SchoolSystem.ViewModel
 {
@@ -20,7 +20,7 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _grades = value;
-                onPropertyChanged(nameof(Grades));
+                OnPropertyChanged(nameof(Grades));
             }
         }
 
@@ -29,7 +29,7 @@ namespace SchoolSystem.ViewModel
             _graderepository = new Graderepository();
             _grades = new ObservableCollection<Grade>();
 
-            _currentStudentId = 1; //testowe zanim nie ogarniemy przekazywania danych o zalogowanym userze
+            _currentStudentId = 11; //testowe zanim nie ogarniemy przekazywania danych o zalogowanym userze
 
             try
             {

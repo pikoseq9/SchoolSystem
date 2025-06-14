@@ -8,11 +8,14 @@ using SchoolSystem.ViewModel.BaseClass;
 using System.Windows.Input;
 using System.Diagnostics;
 using SchoolSystem.Repositories;
+using SchoolSystem.Helpers;
 
 namespace SchoolSystem.ViewModel
 {
     public class LoginViewModel : SchoolSystem.ViewModel.BaseClass.BaseViewModel
     {
+        
+
         private string _typ_konta;
         public string typ_konta
         {
@@ -22,7 +25,7 @@ namespace SchoolSystem.ViewModel
                 if (_typ_konta != value)
                 {
                     _typ_konta = value;
-                    onPropertyChanged(nameof(typ_konta));
+                    OnPropertyChanged(nameof(typ_konta));
                 }
             }
         }
@@ -36,7 +39,8 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _username = value;
-                onPropertyChanged(nameof(Username));
+                OnPropertyChanged(nameof(Username));
+                
             }
         }
 
@@ -47,7 +51,8 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _password = value;
-                onPropertyChanged(nameof(Password));
+                OnPropertyChanged(nameof(Password));
+                
             }
         }
 
@@ -58,7 +63,7 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _errorMessage = value;
-                onPropertyChanged(nameof(ErrorMessage));
+                OnPropertyChanged(nameof(ErrorMessage));
             }
         }
 
@@ -67,7 +72,7 @@ namespace SchoolSystem.ViewModel
         public LoginViewModel()
         {
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
-
+          
         }
 
         // Metoda wykonywana po kliknięciu przycisku Zaloguj
@@ -80,9 +85,9 @@ namespace SchoolSystem.ViewModel
 
             try
             {
-                var student = repositorys.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
+                var student = repositorys.GetStudentByLogin(Username?.Trim());
 
-                if (student != null)
+                if (student != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), student.Password))
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "uczen";
@@ -101,9 +106,9 @@ namespace SchoolSystem.ViewModel
 
             try
             {
-                var student = repositoryt.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
+                var teacher = repositoryt.GetTeacherByLogin(Username?.Trim());
 
-                if (student != null)
+                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "nauczyciel";
@@ -120,45 +125,17 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        // Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
+        //Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
         private bool CanExecuteLogin(object parameter)
-        {
+        {  
             return !string.IsNullOrWhiteSpace(Username) &&
            (parameter is string password && !string.IsNullOrWhiteSpace(password));
         }
+
+
+
     }
 
-    // Pomocnicza klasa dla ICommand (jeśli jeszcze jej nie masz)
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute(parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute(parameter);
-        }
-        public void RaiseCanExecuteChanged()
-        {
-            CommandManager.InvalidateRequerySuggested();
-        }
-    }
+   
 }
 

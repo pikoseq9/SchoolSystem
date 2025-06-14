@@ -8,9 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="Database\szkola.db">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+	  <None Remove="Database\szkola.db" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Database\szkola.db">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>
