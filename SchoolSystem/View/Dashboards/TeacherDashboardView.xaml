@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Oceny" Command="{Binding NavigateToStudentListCommand}" />
+            <Button Content="Uczniowie" Command="{Binding NavigateToStudentListCommand}" />
         </StackPanel>
 
         <ContentControl Grid.Row="1" Margin="10"
