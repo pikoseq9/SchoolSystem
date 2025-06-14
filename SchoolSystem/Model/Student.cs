@@ -29,5 +29,8 @@ namespace SchoolSystem.Model
             Login = login;
             Password = password;
         }
+        public Student()
+        {
+        }
     }
 }

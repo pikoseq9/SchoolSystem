@@ -1,10 +1,8 @@
-﻿using SchoolSystem.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SchoolSystem.Model;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,21 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Collections.ObjectModel;
 
-namespace SchoolSystem.View.Dashboards
+namespace SchoolSystem.View
 {
     /// <summary>
-    /// Logika interakcji dla klasy PrincipalDashboardView.xaml
+    /// Logika interakcji dla klasy EditStudentView.xaml
     /// </summary>
-    public partial class PrincipalDashboardView : UserControl
+    public partial class EditStudentView : UserControl
     {
-        private ObservableCollection<Student> students;
-
-        public PrincipalDashboardView()
+        public EditStudentView()
         {
             InitializeComponent();
-            this.DataContext = new PrincipalDashboardViewModel(students);
         }
     }
 }

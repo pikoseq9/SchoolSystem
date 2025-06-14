@@ -108,7 +108,13 @@ namespace SchoolSystem.ViewModel
             {
                 var teacher = repositoryt.GetTeacherByLogin(Username?.Trim());
 
-                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
+                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password) && teacher.Login == "dyrektor")
+                {
+                    ErrorMessage = "Logowanie pomyślne!";
+                    typ_konta = "dyrektor";
+                    OnLoginSuccess?.Invoke();
+                }
+                else if(teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "nauczyciel";
