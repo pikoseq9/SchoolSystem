@@ -7,44 +7,62 @@ using System.Windows.Input;
 
 namespace SchoolSystem.ViewModel.BaseClass
 {
-    public class RelayCommand : ICommand
+    internal class RelayCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged
+        // Pola dla komend z parametrami
+        private readonly Action<object> _executeWithParameter;
+        private readonly Predicate<object> _canExecuteWithParameter;
+
+        // Pola dla komend bez parametrów
+        private readonly Action _execute;
+        private readonly Func<bool> _canExecute;
+
+        // Konstruktor dla komend Z parametrem
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
-            add
-            {
-                if (canExecute != null) CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                if (canExecute != null) CommandManager.RequerySuggested -= value;
-            }
+            _executeWithParameter = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecuteWithParameter = canExecute;
         }
 
-        private Action<object> execute;
-        private Predicate<object> canExecute;
-
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        // Konstruktor dla komend BEZ parametru (przeciążenie)
+        public RelayCommand(Action execute, Func<bool> canExecute = null)
         {
-            this.execute = execute;
-            this.canExecute = canExecute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
         }
-
 
         public bool CanExecute(object parameter)
         {
+            // Sprawdzamy, który konstruktor został użyty i wywołujemy odpowiednią metodę CanExecute
+            if (_executeWithParameter != null)
+            {
+                return _canExecuteWithParameter == null || _canExecuteWithParameter(parameter);
+            }
+            else if (_execute != null)
+            {
+                return _canExecute == null || _canExecute();
+            }
+            return false; // To nie powinno się zdarzyć, ale dla pewności
+        }
 
-            return canExecute == null ? true : canExecute(parameter);
+        // Event do informowania WPF o zmianach w CanExecute (np. przyciski się aktywują/dezaktywują)
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
         public void Execute(object parameter)
         {
-            execute(parameter);
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CommandManager.InvalidateRequerySuggested();
+            // Sprawdzamy, który konstruktor został użyty i wywołujemy odpowiednią metodę Execute
+            if (_executeWithParameter != null)
+            {
+                _executeWithParameter(parameter);
+            }
+            else if (_execute != null)
+            {
+                _execute();
+            }
         }
     }
 }
