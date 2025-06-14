@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SchoolSystem.ViewModel;
 
 namespace SchoolSystem.View.Pages
 {
@@ -23,6 +24,7 @@ namespace SchoolSystem.View.Pages
         public RemarkPage()
         {
             InitializeComponent();
+            this.DataContext = new RemarkViewModel();
         }
     }
 }
