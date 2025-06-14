@@ -24,13 +24,5 @@ namespace SchoolSystem.View
             InitializeComponent();
             DataContext = new LoginViewModel();
         }
-
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is LoginViewModel vm)
-            {
-                vm.LoginCommand.Execute(PasswordBox.Password);
-            }
-        }
     }
 }

@@ -40,19 +40,19 @@ namespace SchoolSystem.ViewModel
             {
                 _username = value;
                 OnPropertyChanged(nameof(Username));
-                
+                (LoginCommand as RelayCommand)?.RaiseCanExecuteChanged();
             }
         }
 
         private string _password; // W ViewModelu lepiej przechowywać hasło w bezpieczny sposób, ale dla testów...
-        public string Password // To pole będzie ustawiane przez "binding" z Code-Behind
+        public string Password
         {
             get => _password;
             set
             {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
-                
+                (LoginCommand as RelayCommand)?.RaiseCanExecuteChanged();
             }
         }
 
@@ -76,9 +76,9 @@ namespace SchoolSystem.ViewModel
         }
 
         // Metoda wykonywana po kliknięciu przycisku Zaloguj
-        private void ExecuteLogin(object parameter)
+        private void ExecuteLogin(object _)
         {
-            string passwordFromView = parameter as string;
+            string passwordFromView = Password;
 
             var repositorys = new StudentRepository();
             var repositoryt = new TeacherRepository();
@@ -132,10 +132,10 @@ namespace SchoolSystem.ViewModel
         }
 
         //Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
-        private bool CanExecuteLogin(object parameter)
-        {  
+        private bool CanExecuteLogin(object _)
+        {
             return !string.IsNullOrWhiteSpace(Username) &&
-           (parameter is string password && !string.IsNullOrWhiteSpace(password));
+                   !string.IsNullOrWhiteSpace(Password);
         }
 
 
