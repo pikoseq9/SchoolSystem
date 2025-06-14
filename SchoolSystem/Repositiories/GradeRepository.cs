@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Data.Sqlite;
 using SchoolSystem.Model;
@@ -11,9 +10,9 @@ namespace SchoolSystem.Repositories
     {
         private string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "szkola.db");
 
-        public ObservableCollection<Grade> GetAllGrades()
+        public List<Grade> GetAllGrades()
         {
-            ObservableCollection<Grade> grades = new ObservableCollection<Grade>();
+            List<Grade> grades = new List<Grade>();
 
             using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
             {
@@ -57,9 +56,9 @@ namespace SchoolSystem.Repositories
             return grades;
         }
 
-        public ObservableCollection<Grade>? GetAllGradesByStudentId(int studentId)
+        public List<Grade>? GetAllGradesByStudentId(int studentId)
         {
-            ObservableCollection<Grade> grades = new ObservableCollection<Grade>();
+            List<Grade> grades = new List<Grade>();
 
             using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
             {

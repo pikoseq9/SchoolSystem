@@ -17,8 +17,6 @@ namespace SchoolSystem.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ShowLoginPageCommand { get; }
-        public ICommand LoginStudentCommand { get; }
-
 
         private object _currentView;
         public object CurrentView
@@ -34,73 +32,38 @@ namespace SchoolSystem.ViewModel
         public MainViewModel()
         {
             ShowLoginPageCommand = new RelayCommand(o => ShowLoginPage(), null);
-            LoginStudentCommand = new RelayCommand(o => ShowPage(), null);
 
+            ShowLoginPage();
         }
-        
 
-
-        public void ShowUserMenuPage()
-        {
-            // zakładamy, że loginView.DataContext jest LoginViewModel
-            if (CurrentView is LoginView loginView && loginView.DataContext is LoginViewModel loginVM)
-            {
-                CurrentView = new UserMenu(loginVM);
-            }
-            else
-            {
-                CurrentView = new UserMenu(null); // lub nowy bez VM
-            }
-        }
-        private void ShowPage()
+        public void ShowUserDashboardPage()
         {
             if (CurrentView is LoginView loginView && loginView.DataContext is LoginViewModel loginVM)
             {
                 switch (loginVM.typ_konta)
                 {
                     case "uczen":
-                        CurrentView = new StudentDashboardView();
+                        CurrentView = new StudentDashboardView(loginVM);
                         break;
-
                     case "nauczyciel":
-                        CurrentView = new TeacherDashboardView();
-                        break;
-
-                    default:
-                        // np. MessageBox.Show("Nieznany typ konta");
+                        CurrentView = new TeacherDashboardView(loginVM);
                         break;
                 }
             }
         }
-        //private void ShowLoginPage()
-        //{
-        //    var loginView = new LoginView();
 
-        //    if (loginView.DataContext is LoginViewModel loginVM)
-        //    {
-        //        loginVM.OnLoginSuccess = ShowUserMenuPage;  // podłącz akcję do przejścia na UserMenu
-        //    }
-
-        //    CurrentView = loginView;
-        //}
         private void ShowLoginPage()
         {
             var loginView = new LoginView();
 
             if (loginView.DataContext is LoginViewModel loginVM)
             {
-                loginVM.OnLoginSuccess = ShowPage; // <--- to działa!
+                loginVM.OnLoginSuccess = ShowUserDashboardPage;
             }
 
             CurrentView = loginView;
         }
-
-
-
-
     }
-
-
 
 
 }

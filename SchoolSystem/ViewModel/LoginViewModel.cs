@@ -8,14 +8,11 @@ using SchoolSystem.ViewModel.BaseClass;
 using System.Windows.Input;
 using System.Diagnostics;
 using SchoolSystem.Repositories;
-using SchoolSystem.Helpers;
 
 namespace SchoolSystem.ViewModel
 {
     public class LoginViewModel : SchoolSystem.ViewModel.BaseClass.BaseViewModel
     {
-        
-
         private string _typ_konta;
         public string typ_konta
         {
@@ -25,7 +22,7 @@ namespace SchoolSystem.ViewModel
                 if (_typ_konta != value)
                 {
                     _typ_konta = value;
-                    OnPropertyChanged(nameof(typ_konta));
+                    onPropertyChanged(nameof(typ_konta));
                 }
             }
         }
@@ -39,8 +36,7 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _username = value;
-                OnPropertyChanged(nameof(Username));
-                
+                onPropertyChanged(nameof(Username));
             }
         }
 
@@ -51,8 +47,7 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _password = value;
-                OnPropertyChanged(nameof(Password));
-                
+                onPropertyChanged(nameof(Password));
             }
         }
 
@@ -63,7 +58,7 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
+                onPropertyChanged(nameof(ErrorMessage));
             }
         }
 
@@ -72,7 +67,7 @@ namespace SchoolSystem.ViewModel
         public LoginViewModel()
         {
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
-          
+
         }
 
         // Metoda wykonywana po kliknięciu przycisku Zaloguj
@@ -80,44 +75,31 @@ namespace SchoolSystem.ViewModel
         {
             string passwordFromView = parameter as string;
 
-            var repositorys = new StudentRepository();
-            var repositoryt = new TeacherRepository();
+            var studentRepo = new StudentRepository();
+            var teacherRepo = new TeacherRepository();
 
             try
             {
-                var student = repositorys.GetStudentByLogin(Username?.Trim(), passwordFromView?.Trim());
-
-                if (student != null)
+                var student = studentRepo.GetStudentByLoginOnly(Username?.Trim());
+                if (student != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), student.Password))
                 {
-                    ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "uczen";
-                    OnLoginSuccess?.Invoke();
-                }
-                else
-                {
-                    ErrorMessage = "Błędny login lub hasło.";
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Błąd podczas logowania: {ex.Message}";
-            }
-
-
-            try
-            {
-                var student = repositoryt.GetTeacherByLogin(Username?.Trim(), passwordFromView?.Trim());
-
-                if (student != null)
-                {
                     ErrorMessage = "Logowanie pomyślne!";
-                    typ_konta = "nauczyciel";
                     OnLoginSuccess?.Invoke();
+                    return;
                 }
-                else
+
+
+                var teacher = teacherRepo.GetTeacherByLoginOnly(Username?.Trim());
+                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
                 {
-                    ErrorMessage = "Błędny login lub hasło.";
+                    typ_konta = "nauczyciel";
+                    ErrorMessage = "Logowanie pomyślne!";
+                    OnLoginSuccess?.Invoke();
+                    return;
                 }
+
+                ErrorMessage = "Błędny login lub hasło.";
             }
             catch (Exception ex)
             {
@@ -125,17 +107,45 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        //Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
+
+        // Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
         private bool CanExecuteLogin(object parameter)
-        {  
+        {
             return !string.IsNullOrWhiteSpace(Username) &&
            (parameter is string password && !string.IsNullOrWhiteSpace(password));
         }
-
-
-
     }
 
-   
-}
+    // Pomocnicza klasa dla ICommand (jeśli jeszcze jej nie masz)
+    public class RelayCommand : ICommand
+    {
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
 
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null || _canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute(parameter);
+        }
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
+    }
+}

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.ViewModel
 {
-    internal class RemarkViewModel
+    internal class BaseViewModel
     {
+        // tutaj INotifyPropertyChanged robimy
+
     }
 }

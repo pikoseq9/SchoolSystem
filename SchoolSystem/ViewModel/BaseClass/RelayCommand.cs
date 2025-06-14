@@ -41,10 +41,5 @@ namespace SchoolSystem.ViewModel.BaseClass
         {
             execute(parameter);
         }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CommandManager.InvalidateRequerySuggested();
-        }
     }
 }

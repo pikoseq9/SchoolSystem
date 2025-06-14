@@ -1,5 +1,4 @@
-﻿using SchoolSystem.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +23,6 @@ namespace SchoolSystem.View.Pages
         public GradesPage()
         {
             InitializeComponent();
-            this.DataContext = new GradesViewModel(); //id zalogowanego usera bedzie jako parametr
         }
     }
 }
