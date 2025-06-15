@@ -17,14 +17,14 @@ using System.Windows.Shapes;
 namespace SchoolSystem.View.Pages
 {
     /// <summary>
-    /// Logika interakcji dla klasy StudentListPage.xaml
+    /// Logika interakcji dla klasy TeacherGradesPage.xaml
     /// </summary>
-    public partial class StudentListPage : UserControl
+    public partial class TeacherGradesPage : UserControl
     {
-        public StudentListPage()
+        public TeacherGradesPage()
         {
             InitializeComponent();
-            //this.DataContext = new StudentListViewModel();
+            //this.DataContext = new TeacherGradesViewModel();
         }
     }
 }

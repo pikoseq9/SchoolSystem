@@ -1,5 +1,4 @@
-﻿using SchoolSystem.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +16,13 @@ using System.Windows.Shapes;
 namespace SchoolSystem.View.Pages
 {
     /// <summary>
-    /// Logika interakcji dla klasy StudentListPage.xaml
+    /// Logika interakcji dla klasy TeacherRemarksPage.xaml
     /// </summary>
-    public partial class StudentListPage : UserControl
+    public partial class TeacherRemarksPage : UserControl
     {
-        public StudentListPage()
+        public TeacherRemarksPage()
         {
             InitializeComponent();
-            //this.DataContext = new StudentListViewModel();
         }
     }
 }
