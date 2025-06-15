@@ -19,15 +19,14 @@ namespace SchoolSystem.ViewModel
         }
 
         public ICommand ShowManageUsersCommand { get; }
+        public ICommand ShowManageTeachersCommand { get; }
 
-        private ObservableCollection<Student> Students;
-
-        public PrincipalDashboardViewModel(ObservableCollection<Student> students)
+        public PrincipalDashboardViewModel()
         {
-            Students = students;
             ShowManageUsersCommand = new RelayCommand(ShowManageUsers);
+            ShowManageTeachersCommand = new RelayCommand(ShowManageTeachers);
 
-            // Możesz ustawić domyślny widok, np. null lub jakiś inny
+
             CurrentViewModel = null;
         }
 
@@ -35,5 +34,10 @@ namespace SchoolSystem.ViewModel
         {
             CurrentViewModel = new ManageUsersViewModel();
         }
+        private void ShowManageTeachers()
+        {
+            CurrentViewModel = new ManageTeachersViewModel();
+        }
+
     }
 }

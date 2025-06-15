@@ -10,14 +10,28 @@
              d:DesignHeight="550" d:DesignWidth="950">
 
     <Grid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
-            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" />
+        <!-- Dodajemy dwa wiersze: górny na przyciski, dolny na zawartość -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Górny pasek -->
+            <RowDefinition Height="*"/>
+            <!-- Reszta na zawartość -->
+        </Grid.RowDefinitions>
+
+        <!-- Przyciski wyboru widoku -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10" Grid.Row="0">
+            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="5" Width="455"/>
+            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="5" Width="455"/>
         </StackPanel>
 
-        <ContentControl Content="{Binding CurrentViewModel}">
+        <!-- Dynamiczna zawartość zależna od wybranego widoku -->
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type vm:ManageUsersViewModel}">
                     <view:ManageUserView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ManageTeachersViewModel}">
+                    <view:ManageTeacherView />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
