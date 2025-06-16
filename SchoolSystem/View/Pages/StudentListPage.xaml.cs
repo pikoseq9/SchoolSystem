@@ -14,17 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SchoolSystem.View.Dashboards
+namespace SchoolSystem.View.Pages
 {
     /// <summary>
-    /// Logika interakcji dla klasy TeacherDashboardView.xaml
+    /// Logika interakcji dla klasy StudentListPage.xaml
     /// </summary>
-    public partial class TeacherDashboardView : UserControl
+    public partial class StudentListPage : UserControl
     {
-        public TeacherDashboardView()
+        public StudentListPage()
         {
             InitializeComponent();
-            this.DataContext = new TeacherDashboardViewModel();
+            this.DataContext = new StudentListViewModel();
         }
     }
 }
