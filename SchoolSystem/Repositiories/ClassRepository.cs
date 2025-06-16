@@ -20,7 +20,14 @@ namespace SchoolSystem.Repositories
                 {
                     connection.Open();
 
-                    string query = "SELECT ID_Klasa, Kod, Wychowawca_ID FROM Klasy";
+                    string query = @"
+                SELECT 
+                    k.ID_Klasa, 
+                    k.Kod, 
+                    k.Wychowawca_ID, 
+                    n.Imie || ' ' || n.Nazwisko AS Nauczyciel
+                FROM Klasy k
+                LEFT JOIN Nauczyciele n ON k.Wychowawca_ID = n.ID_Nauczyciel";
 
                     using (SqliteCommand command = new SqliteCommand(query, connection))
                     {
@@ -31,7 +38,10 @@ namespace SchoolSystem.Repositories
                                 classes.Add(new Class(
                                     code: reader.GetString(reader.GetOrdinal("Kod")),
                                     classTeacherID: reader.GetInt32(reader.GetOrdinal("Wychowawca_ID")),
-                                    id: reader.GetInt32(reader.GetOrdinal("ID_Klasa"))
+                                    id: reader.GetInt32(reader.GetOrdinal("ID_Klasa")),
+                                    teacherFullName: reader.IsDBNull(reader.GetOrdinal("Nauczyciel"))
+                                                     ? "Brak danych"
+                                                     : reader.GetString(reader.GetOrdinal("Nauczyciel"))
                                 ));
                             }
                         }
@@ -50,6 +60,86 @@ namespace SchoolSystem.Repositories
             }
 
             return classes;
+        }
+
+        public void AddClass(Class newClass)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"INSERT INTO Klasy (Kod, Wychowawca_ID)
+                         VALUES (@Code, @TeacherId)";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Code", newClass.Code ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TeacherId", newClass.ClassTeacherID);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdateClass(Class updatedClass)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"UPDATE Klasy
+                         SET Kod = @Code,
+                             ID_Wychowawca = @TeacherId
+                         WHERE ID_Klasa = @Id";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Code", (object)updatedClass.Code ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@TeacherId", updatedClass.ClassTeacherID);
+                    command.Parameters.AddWithValue("@Id", updatedClass.Id);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public void EditClass(Class updatedClass)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"UPDATE Klasy
+                         SET Kod = @Code,
+                             Wychowawca_ID = @TeacherId
+                         WHERE ID_Klasa = @Id";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Code", updatedClass.Code ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TeacherId", updatedClass.ClassTeacherID);
+                    command.Parameters.AddWithValue("@Id", updatedClass.Id);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteClass(int classId)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = "DELETE FROM Klasy WHERE ID_Klasa = @Id";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", classId);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
