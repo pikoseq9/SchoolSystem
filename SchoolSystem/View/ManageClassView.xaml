@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="SchoolSystem.View.ManageClassView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
+             Height="400" Width="760">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Lista klas -->
+        <ListView Grid.Row="0"
+                  ItemsSource="{Binding Classes}"
+                  SelectedItem="{Binding SelectedClass, Mode=TwoWay}"
+                  Margin="0,0,0,10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Kod klasy" Width="150" DisplayMemberBinding="{Binding Code}" />
+                    <GridViewColumn Header="Wychowawca" Width="200" DisplayMemberBinding="{Binding TeacherFullName}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Przycisk dodaj, edytuj, usuń -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Dodaj" Command="{Binding AddClassCommand}" Margin="0,0,5,0" />
+            <Button Content="Edytuj" Command="{Binding EditClassCommand}" Margin="0,0,5,0" />
+            <Button Content="Usuń" Command="{Binding DeleteClassCommand}" Margin="0,0,5,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>

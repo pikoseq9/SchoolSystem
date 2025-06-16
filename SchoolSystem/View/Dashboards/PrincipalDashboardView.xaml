@@ -20,8 +20,9 @@
 
         <!-- Przyciski wyboru widoku -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10" Grid.Row="0">
-            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="5" Width="455"/>
-            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="5" Width="455"/>
+            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="5" Width="300"/>
+            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="5" Width="300"/>
+            <Button Content="Klasy" Command="{Binding ShowManageClassCommand}" Margin="5" Width="300"/>
         </StackPanel>
 
         <!-- Dynamiczna zawartość zależna od wybranego widoku -->
@@ -32,6 +33,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:ManageTeachersViewModel}">
                     <view:ManageTeacherView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ManageClassViewModel}">
+                    <view:ManageClassView />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
