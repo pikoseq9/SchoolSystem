@@ -12,5 +12,13 @@ namespace SchoolSystem.Model
         public int StudentID { get; set; }
         public int TeacherID { get; set; }
         public string? Value { get; set; }
+
+        public Remark(int id, int studentID, int teacherID, string? value)
+        {
+            Id = id;
+            StudentID = studentID;
+            TeacherID = teacherID;
+            Value = value;
+        }
     }
 }
