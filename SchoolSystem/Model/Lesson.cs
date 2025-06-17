@@ -14,16 +14,21 @@ namespace SchoolSystem.Model
         public int SubjectID { get; set; }
         public int ClassID { get; set; }
         public int TeacherID { get; set; }
-        public DateTime Date { get; set; }
+        //Zmiany wynikające ze zmian w bazie danych 
+        public string DayOfWeek { get; set; }           
+        public string StartTime { get; set; }           
+        public int Duration { get; set; }
 
-        public Lesson(int id, int roomID, int subjectID, int classID, int teacherID, DateTime date)
+        public Lesson(int id, int roomID, int subjectID, int classID, int teacherID, string dayOfWeek, string startTime, int duration)
         {
             Id = id;
             RoomID = roomID;
             SubjectID = subjectID;
             ClassID = classID;
             TeacherID = teacherID;
-            Date = date;
+            DayOfWeek = dayOfWeek;
+            StartTime = startTime;
+            Duration = duration;
         }
     }
 }
