@@ -25,12 +25,12 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        public RemarkViewModel()
+        public RemarkViewModel(int studentId)
         {
+            _studentId = studentId;
             _teacherRepository = new TeacherRepository();
             _remarkRepository = new RemarkRepository(_teacherRepository);
             _remarks = new ObservableCollection<Remark>();
-            _studentId = 11; // Testowe ID studenta, do usunięcia po implementacji logowania
             try
             {
                 _remarks = _remarkRepository.GetAllRemarksByStudentId(_studentId);
@@ -39,6 +39,10 @@ namespace SchoolSystem.ViewModel
             {
                 Console.WriteLine($"Błąd przy pobieraniu uwag: {ex.Message}");
             }
+        }
+
+        public RemarkViewModel() : this(0) // Calls the parameterized constructor with a default ID (0 or -1, something invalid)
+        {
         }
     }
 }

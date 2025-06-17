@@ -21,10 +21,10 @@ namespace SchoolSystem.View.Dashboards
     /// </summary>
     public partial class StudentDashboardView : UserControl
     {
-        public StudentDashboardView()
+        public StudentDashboardView(int studentId)
         {
             InitializeComponent();
-            this.DataContext = new StudentDashboardViewModel();
+            this.DataContext = new StudentDashboardViewModel(studentId);
         }
     }
 }

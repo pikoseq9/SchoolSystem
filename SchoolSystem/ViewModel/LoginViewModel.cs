@@ -30,6 +30,17 @@ namespace SchoolSystem.ViewModel
             }
         }
 
+        private int? _loggedInUserId;
+        public int? LoggedInUserId
+        {
+            get => _loggedInUserId;
+            set
+            {
+                _loggedInUserId = value;
+                OnPropertyChanged(nameof(LoggedInUserId));
+            }
+        }
+
         public Action OnLoginSuccess { get; set; }
 
         private string _username;
@@ -91,6 +102,7 @@ namespace SchoolSystem.ViewModel
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "uczen";
+                    LoggedInUserId = student.Id;
                     OnLoginSuccess?.Invoke();
                 }
                 else
@@ -137,11 +149,6 @@ namespace SchoolSystem.ViewModel
             return !string.IsNullOrWhiteSpace(Username) &&
                    !string.IsNullOrWhiteSpace(Password);
         }
-
-
-
     }
-
-   
 }
 

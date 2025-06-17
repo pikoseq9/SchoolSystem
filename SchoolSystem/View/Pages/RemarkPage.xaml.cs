@@ -24,7 +24,6 @@ namespace SchoolSystem.View.Pages
         public RemarkPage()
         {
             InitializeComponent();
-            this.DataContext = new RemarkViewModel();
         }
     }
 }

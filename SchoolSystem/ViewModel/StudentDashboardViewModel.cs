@@ -22,14 +22,16 @@ namespace SchoolSystem.ViewModel
                 OnPropertyChanged(); // Powiadom UI o zmianie
             }
         }
+        private readonly int _studentId;
 
         // Komendy, które będą wywoływane przez przyciski w StudentDashboardView.xaml
         public ICommand NavigateToGradesCommand { get; }
         public ICommand NavigateToRemarksCommand { get; }
         public ICommand NavigateToScheduleCommand { get; }
 
-        public StudentDashboardViewModel()
+        public StudentDashboardViewModel(int studentId)
         {
+            _studentId = studentId;
             // Inicjalizacja komend przy użyciu RelayCommand
             // Zauważ, że konstruktor RelayCommand przyjmujący Action bez parametru jest używany
             NavigateToGradesCommand = new RelayCommand(NavigateToGrades);
@@ -43,13 +45,13 @@ namespace SchoolSystem.ViewModel
         // Metody wywoływane przez komendy, które zmieniają aktualny pod-ViewModel
         private void NavigateToGrades()
         {
-            CurrentStudentDetailViewModel = new GradesViewModel();
+            CurrentStudentDetailViewModel = new GradesViewModel(_studentId);
            
         }
 
         private void NavigateToRemarks()
         {
-            CurrentStudentDetailViewModel = new RemarkViewModel();
+            CurrentStudentDetailViewModel = new RemarkViewModel(_studentId);
         }
 
         private void NavigateToSchedule()
