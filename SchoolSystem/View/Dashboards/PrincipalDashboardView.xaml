@@ -4,9 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SchoolSystem.View.Dashboards"
+             xmlns:view="clr-namespace:SchoolSystem.View"
+             xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="550" d:DesignWidth="950">
+
     <Grid>
-            
+        <!-- Dodajemy dwa wiersze: górny na przyciski, dolny na zawartość -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Górny pasek -->
+            <RowDefinition Height="*"/>
+            <!-- Reszta na zawartość -->
+        </Grid.RowDefinitions>
+
+        <!-- Przyciski wyboru widoku -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10" Grid.Row="0">
+            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="5" Width="300"/>
+            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="5" Width="300"/>
+            <Button Content="Klasy" Command="{Binding ShowManageClassCommand}" Margin="5" Width="300"/>
+        </StackPanel>
+
+        <!-- Dynamiczna zawartość zależna od wybranego widoku -->
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vm:ManageUsersViewModel}">
+                    <view:ManageUserView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ManageTeachersViewModel}">
+                    <view:ManageTeacherView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ManageClassViewModel}">
+                    <view:ManageClassView />
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </UserControl>

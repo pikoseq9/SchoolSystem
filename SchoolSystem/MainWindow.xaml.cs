@@ -29,6 +29,7 @@ namespace SchoolSystem
             InitializeComponent();
 
             TestDatabaseConnectionAndDataLoad();
+    
         }
 
         private void TestDatabaseConnectionAndDataLoad()
@@ -40,6 +41,7 @@ namespace SchoolSystem
 
             grades = graderepository.GetAllGrades();
             students = studentrepository.GetAllStudents();
+
             //MessageBox.Show($"{grades.Count}");
             //MessageBox.Show($"{students.Count}");
 

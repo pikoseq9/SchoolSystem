@@ -66,6 +66,10 @@ namespace SchoolSystem.ViewModel
                         CurrentView = new TeacherDashboardView();
                         break;
 
+                    case "dyrektor":
+                        CurrentView = new PrincipalDashboardView();
+                        break;
+
                     default:
                         // np. MessageBox.Show("Nieznany typ konta");
                         break;

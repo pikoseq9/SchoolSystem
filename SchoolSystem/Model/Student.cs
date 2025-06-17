@@ -29,5 +29,12 @@ namespace SchoolSystem.Model
             Login = login;
             Password = password;
         }
+
+        public Class Class { get; set; }
+        public string ClassName => Class?.Code ?? "Brak klasy";
+
+        public Student()
+        {
+        }
     }
 }
