@@ -18,14 +18,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Text="Moje Oceny"
-                   FontSize="28"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Margin="0,0,0,20"/>
-
         <DataGrid Grid.Row="1" ItemsSource="{Binding Grades}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="1" RowBackground="White">
 
             <DataGrid.Resources>
