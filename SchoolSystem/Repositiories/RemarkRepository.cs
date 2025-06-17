@@ -7,9 +7,14 @@ using SchoolSystem.Model;
 
 namespace SchoolSystem.Repositories
 {
-    public class Remarkrepository
+    public class RemarkRepository
     {
         private string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "szkola.db");
+        private readonly TeacherRepository _teacherRepository;
+        public RemarkRepository(TeacherRepository teacherRepository)
+        {
+            _teacherRepository = teacherRepository ?? throw new ArgumentNullException(nameof(teacherRepository));
+        }
 
         public ObservableCollection<Remark>? GetAllRemarksByStudentId(int studentId)
         {
@@ -21,7 +26,7 @@ namespace SchoolSystem.Repositories
                 {
                     connection.Open();
 
-                    string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Dziennik_uwag WHERE Uczen_ID = @Id";
+                    string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Uwagi WHERE Uczen_ID = @Id";
 
                     using (SqliteCommand command = new SqliteCommand(query, connection))
                     {
@@ -31,11 +36,23 @@ namespace SchoolSystem.Repositories
 
                             while (reader.Read())
                             {
+
+                                int teacherId = reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID"));
+                                string teacherFullName = "Nieznany Nauczyciel"; // Default value
+
+                                // Use the injected TeacherRepository to get the teacher's name
+                                Teacher teacher = _teacherRepository.GetTeacherById(teacherId);
+                                if (teacher != null)
+                                {
+                                    teacherFullName = $"{teacher.Name} {teacher.SurName}";
+                                }
+
                                 remarks.Add(new Remark(
                                     id: reader.GetInt32(reader.GetOrdinal("ID_Uwaga")),
                                     studentID: reader.GetInt32(reader.GetOrdinal("Uczen_ID")),
                                     teacherID: reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID")),
-                                    value: reader.GetString(reader.GetOrdinal("Tresc"))
+                                    value: reader.GetString(reader.GetOrdinal("Tresc")), 
+                                    teacherFullName: teacherFullName
                                 ));
                             }
                         }
@@ -65,7 +82,7 @@ namespace SchoolSystem.Repositories
                 try
                 {
                     connection.Open();
-                    string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Dziennik_uwag WHERE ID_Uwaga = @Id";
+                    string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Uwagi WHERE ID_Uwaga = @Id";
 
                     using (SqliteCommand command = new SqliteCommand(query, connection))
                     {
@@ -75,11 +92,21 @@ namespace SchoolSystem.Repositories
                         {
                             if (reader.Read())
                             {
+                                int teacherId = reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID"));
+                                string teacherFullName = "Nieznany Nauczyciel"; // Default value
+
+                                // Use the injected TeacherRepository to get the teacher's name
+                                Teacher teacher = _teacherRepository.GetTeacherById(teacherId);
+                                if (teacher != null)
+                                {
+                                    teacherFullName = $"{teacher.Name} {teacher.SurName}";
+                                }
                                 remark = new Remark(
                                     id: reader.GetInt32(reader.GetOrdinal("ID_Uwaga")),
                                     studentID: reader.GetInt32(reader.GetOrdinal("Uczen_ID")),
                                     teacherID: reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID")),
-                                    value: reader.GetString(reader.GetOrdinal("Tresc"))
+                                    value: reader.GetString(reader.GetOrdinal("Tresc")), 
+                                    teacherFullName: teacherFullName
                                 );
                             }
                         }
@@ -95,7 +122,7 @@ namespace SchoolSystem.Repositories
                     Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania uwagi o ID {remarkId}: {ex.Message}");
                     throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania uwagi o ID {remarkId}.", ex);
                 }
-            }
+            }   
             return remark;
         }
     }
