@@ -22,5 +22,9 @@ namespace SchoolSystem.Model
             Value = value;
             TeacherFullName = teacherFullName;
         }
+
+        public string? TeacherName { get; set; }
     }
+
+
 }

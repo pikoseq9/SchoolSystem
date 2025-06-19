@@ -59,5 +59,10 @@ namespace SchoolSystem.ViewModel
         {
             _canExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 }

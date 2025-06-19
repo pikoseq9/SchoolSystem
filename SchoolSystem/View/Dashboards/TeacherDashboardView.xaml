@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="10">
@@ -19,13 +20,30 @@
         </StackPanel>
 
         <ContentControl Grid.Row="1" Margin="10"
-            Content="{Binding CurrentTeacherDetailViewModel}">
+                        Content="{Binding CurrentTeacherDetailViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type vm:StudentListViewModel}">
                     <pages:StudentListPage />
                 </DataTemplate>
+                
+                
+                <DataTemplate DataType="{x:Type vm:TeacherGradesViewModel}">
+                    <pages:TeacherGradesPage />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:TeacherRemarksViewModel}">
+                    <pages:TeacherRemarksPage />
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+            <Button Content="Edytuj oceny" Width="150" Margin="10,0"
+                    Command="{Binding NavigateToTeacherGradesComand}" />
+            <Button Content="Edytuj uwagi" Width="150" Margin="10,0"
+                    Command="{Binding NavigateToTeacherRemarksComand}" />
+        </StackPanel>
+
+
 
     </Grid>
 </UserControl>

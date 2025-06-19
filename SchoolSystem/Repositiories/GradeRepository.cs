@@ -105,6 +105,61 @@ namespace SchoolSystem.Repositories
             return grades;
         }
 
+        public ObservableCollection<Grade> GetGradesWithSubjectNameByStudentId(int studentId)
+        {
+            ObservableCollection<Grade> grades = new ObservableCollection<Grade>();
+
+            using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"
+            SELECT 
+                o.ID_Ocena,
+                o.Uczen_ID,
+                o.Przedmiot_ID,
+                o.Data,
+                o.Ocena,
+                o.Kategoria,
+                o.Waga,
+                p.Nazwa AS SubjectName
+            FROM 
+                Oceny o
+            JOIN 
+                Przedmioty p ON o.Przedmiot_ID = p.ID_Przedmiot
+            WHERE 
+                o.Uczen_ID = @id";
+
+                using (SqliteCommand command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id", studentId);
+
+                    using (SqliteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var grade = new Grade(
+                                id: reader.GetInt32(0),
+                                studentID: reader.GetInt32(1),
+                                subjectID: reader.GetInt32(2),
+                                date: DateTime.Parse(reader.GetString(3)),
+                                value: (decimal)reader.GetDouble(4),
+                                category: reader.GetString(5),
+                                weight: reader.GetInt32(6)
+                            );
+
+                            grade.SubjectName = reader.GetString(7);
+
+                            grades.Add(grade);
+                        }
+                    }
+                }
+            }
+
+            return grades;
+        }
+
+
         public Grade? GetGradeById(int gradeId)
         {
             Grade? grade = null;
@@ -150,5 +205,40 @@ namespace SchoolSystem.Repositories
             }
             return grade;
         }
+
+
+        public void InsertGrade(Grade grade)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+        INSERT INTO Oceny (Uczen_ID, Przedmiot_ID, Data, Ocena, Kategoria, Waga)
+        VALUES (@Uczen_ID, @Przedmiot_ID, @Data, @Ocena, @Kategoria, @Waga);";
+
+            command.Parameters.AddWithValue("@Uczen_ID", grade.StudentID);
+            command.Parameters.AddWithValue("@Przedmiot_ID", grade.SubjectID);
+            command.Parameters.AddWithValue("@Data", grade.Date.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@Ocena", grade.Value);
+            command.Parameters.AddWithValue("@Kategoria", grade.Category ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Waga", grade.Weight);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteGrade(int id)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = "DELETE FROM Oceny WHERE ID_Ocena = @Id";
+            command.Parameters.AddWithValue("@Id", id);
+            command.ExecuteNonQuery();
+        }
+
+
+
     }
 }

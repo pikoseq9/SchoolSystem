@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="SchoolSystem.View.Pages.TeacherGradesPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SchoolSystem.View.Pages"
+             xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <!--<UserControl.DataContext>
+        <vm:TeacherGradesViewModel/>
+    </UserControl.DataContext>-->
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+               Text="Oceny ucznia"
+               FontSize="28"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Margin="0,0,0,20"/>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Grades}"  SelectedItem="{Binding SelectedGrade, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="1" RowBackground="White">
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="5,3"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Przedmiot" Binding="{Binding SubjectName}" Width="2*" />
+
+                <DataGridTextColumn Header="Data" Binding="{Binding Date, StringFormat='dd.MM.yyyy'}" Width="*"/>
+
+                <DataGridTextColumn Header="Ocena" Binding="{Binding Value}" Width="Auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Kategoria" Binding="{Binding Category}" Width="2*"/>
+
+                <DataGridTextColumn Header="Waga" Binding="{Binding Weight}" Width="SizeToHeader">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button Content="Dodaj ocenę" Width="150" Margin="10,0"
+            Command="{Binding AddGradeCommand}" />
+                    <Button Content="Usuń ocenę" Width="150" Margin="10,0"
+            Command="{Binding DeleteGradeCommand}" />       
+        </StackPanel>
+    </Grid>
+    
+</UserControl>
