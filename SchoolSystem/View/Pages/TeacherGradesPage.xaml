@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -26,7 +27,7 @@
                VerticalAlignment="Center"
                Margin="0,0,0,20"/>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Grades}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="1" RowBackground="White">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Grades}"  SelectedItem="{Binding SelectedGrade, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="1" RowBackground="White">
 
             <DataGrid.Resources>
                 <Style TargetType="DataGridCell">
@@ -36,7 +37,7 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Przedmiot ID" Binding="{Binding SubjectID}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="Przedmiot" Binding="{Binding SubjectName}" Width="2*" />
 
                 <DataGridTextColumn Header="Data" Binding="{Binding Date, StringFormat='dd.MM.yyyy'}" Width="*"/>
 
@@ -59,6 +60,13 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button Content="Dodaj ocenę" Width="150" Margin="10,0"
+            Command="{Binding AddGradeCommand}" />
+                    <Button Content="Usuń ocenę" Width="150" Margin="10,0"
+            Command="{Binding DeleteGradeCommand}" />       
+        </StackPanel>
     </Grid>
     
 </UserControl>

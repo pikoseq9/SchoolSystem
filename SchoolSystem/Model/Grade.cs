@@ -15,6 +15,7 @@ namespace SchoolSystem.Model
         public decimal Value { get; set; }
         public string? Category { get; set; }
         public int Weight { get; set; }
+        public string SubjectName { get; set; }
 
         public Grade() { }
 

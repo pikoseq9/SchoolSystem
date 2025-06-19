@@ -64,5 +64,10 @@ namespace SchoolSystem.ViewModel.BaseClass
                 _execute();
             }
         }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 }
