@@ -24,7 +24,6 @@ namespace SchoolSystem.View.Pages
         public SchedulePage()
         {
             InitializeComponent();
-            this.DataContext = new ScheduleViewModel();
         }
     }
 }
