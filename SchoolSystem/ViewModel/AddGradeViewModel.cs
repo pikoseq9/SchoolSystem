@@ -5,6 +5,7 @@ using System.Windows;
 using System;
 using System.Linq;
 using System.Collections.ObjectModel;
+using SchoolSystem.Repositories;
 
 public class AddGradeViewModel : BaseViewModel
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace SchoolSystem.ViewModel
+namespace SchoolSystem.ViewModel.BaseClass
 {
     internal class RelayCommand : ICommand
     {
@@ -58,11 +58,9 @@ namespace SchoolSystem.ViewModel
         public void RaiseCanExecuteChanged()
         {
             _canExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
             CommandManager.InvalidateRequerySuggested();
         }
+
+        
     }
 }
