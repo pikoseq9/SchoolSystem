@@ -3,10 +3,102 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SchoolSystem.View.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
-            
+        <!-- Nagłówki dni tygodnia -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <!-- na godziny -->
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <!-- nagłówek dni -->
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <!-- Nagłówki dni -->
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Poniedziałek" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="Wtorek" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Row="0" Grid.Column="3" Text="Środa" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Row="0" Grid.Column="4" Text="Czwartek" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Row="0" Grid.Column="5" Text="Piątek" HorizontalAlignment="Center" FontWeight="Bold"/>
+
+        <!-- Godziny po lewej -->
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="08:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="09:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="10:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="11:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="12:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="13:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="14:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="15:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <!-- ItemsControl z lekcjami -->
+        <ItemsControl ItemsSource="{Binding LessonsDisplay}"
+                      Grid.Row="1" Grid.RowSpan="8"
+                      Grid.Column="1" Grid.ColumnSpan="5">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid IsItemsHost="True">
+                        <!-- 5 kolumn dla dni -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 8 wierszy dla godzin -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Grid.Row" Value="{Binding GridRow}"/>
+                    <Setter Property="Grid.Column" Value="{Binding GridColumn}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="LightBlue" CornerRadius="5" Padding="5" Margin="3" BorderBrush="LightSteelBlue" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="{Binding SubjectName}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding TeacherName}" FontSize="11"/>
+                            <TextBlock Text="{Binding RoomName}" FontSize="10" Foreground="Gray"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
+
 </UserControl>

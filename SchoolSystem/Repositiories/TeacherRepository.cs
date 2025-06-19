@@ -46,13 +46,13 @@ namespace SchoolSystem.Repositories
                 catch (SqliteException ex)
                 {
                     Console.WriteLine($"Błąd bazy danych: {ex.Message}");
-                    throw new Exception("Nie udało się pobrać danych uczniów z bazy.", ex);
+                    throw new Exception("Nie udało się pobrać danych nauczycieli z bazy.", ex);
                 }
                 catch (Exception ex)
                 {
                     // Obsługa innych, ogólnych błędów
                     Console.WriteLine($"Wystąpił nieoczekiwany błąd: {ex.Message}");
-                    throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych uczniów.", ex);
+                    throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych nauczycieli.", ex);
                 }
             }
             return teachers;
@@ -93,13 +93,13 @@ namespace SchoolSystem.Repositories
                 }
                 catch (SqliteException ex)
                 {
-                    Console.WriteLine($"Błąd bazy danych podczas pobierania studenta o ID {teacherId}: {ex.Message}");
+                    Console.WriteLine($"Błąd bazy danych podczas pobierania nauczycieli o ID {teacherId}: {ex.Message}");
                     throw new Exception($"Nie udało się pobrać studenta o ID {teacherId}.", ex);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {teacherId}: {ex.Message}");
-                    throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania studenta o ID {teacherId}.", ex);
+                    Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania nauczyciela ID {teacherId}: {ex.Message}");
+                    throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania nauczycieli o ID {teacherId}.", ex);
                 }
             }
             return teacher;
@@ -137,6 +137,79 @@ namespace SchoolSystem.Repositories
             }
 
             return null;
+        }
+
+        public void UpdateTeacher(Teacher teacher)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"UPDATE Nauczyciele
+                         SET Imie = @Name,
+                             Nazwisko = @SurName,
+                             Data_Urodzenia = @DateOfBirth,
+                             Plec = @Gender,
+                             Numer_tel = @PhoneNumber,
+                             Login = @Login,
+                             Haslo = @Password
+                         WHERE ID_Nauczyciel = @Id";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", (object)teacher.Name ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@SurName", (object)teacher.SurName ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@DateOfBirth", (object)teacher.DateOfBirth ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Gender", (object)teacher.Gender ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@PhoneNumber", (object)teacher.PhoneNumber ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Login", (object)teacher.Login ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Password", (object)teacher.Password ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Id", teacher.Id);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteTeacher(int teacherId)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = "DELETE FROM Nauczyciele WHERE ID_Nauczyciel = @Id";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", teacherId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AddTeacher(Teacher teacher)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"INSERT INTO Nauczyciele 
+                        (Imie, Nazwisko, Data_Urodzenia, Plec, Numer_tel, Login, Haslo) 
+                         VALUES (@Name, @SurName, @DateOfBirth, @Gender, @PhoneNumber, @Login, @Password)";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", (object)teacher.Name ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@SurName", (object)teacher.SurName ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@DateOfBirth", (object)teacher.DateOfBirth ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Gender", (object)teacher.Gender ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@PhoneNumber", (object)teacher.PhoneNumber ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Login", (object)teacher.Login ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Password", (object)teacher.Password ?? DBNull.Value);
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

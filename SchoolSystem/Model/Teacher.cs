@@ -28,5 +28,9 @@ namespace SchoolSystem.Model
             Login = login;
             Password = password;
         }
+        public Teacher() { }
+
+        public string FullName => $"{Name} {SurName}";
+
     }
 }

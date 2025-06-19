@@ -12,8 +12,6 @@ namespace SchoolSystem.ViewModel
         private readonly Graderepository _graderepository;
         private ObservableCollection<Grade>? _grades;
 
-        private int _currentStudentId; //testowe zanim nie ogarniemy przekazywania danych o zalogowanym userze
-
         public ObservableCollection<Grade> Grades
         {
             get { return _grades; }
@@ -24,22 +22,24 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        public GradesViewModel()
+        public GradesViewModel(int studentId)
         {
             _graderepository = new Graderepository();
             _grades = new ObservableCollection<Grade>();
 
-            _currentStudentId = 11; //testowe zanim nie ogarniemy przekazywania danych o zalogowanym userze
-
             try
             {
                 _grades.Clear();
-                _grades = _graderepository.GetAllGradesByStudentId(_currentStudentId);
+                _grades = _graderepository.GetAllGradesByStudentId(studentId);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Wystąpił błąd podczas ładowania ocen: {ex.Message}");
             }
+        }
+        public GradesViewModel() : this(0)
+        {
+            _grades = new ObservableCollection<Grade>();
         }
     }
 }

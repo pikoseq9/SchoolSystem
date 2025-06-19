@@ -143,5 +143,80 @@ namespace SchoolSystem.Repositories
             return null;
         }
 
+        public void UpdateStudent(Student student)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"UPDATE Uczniowie
+                         SET Klasa_ID = @ClassID,
+                             Imie = @Name,
+                             Nazwisko = @SurName,
+                             Data_Urodzenia = @DateOfBirth,
+                             Plec = @Gender,
+                             PESEL = @Pesel,
+                             Login = @Login,
+                             Haslo = @Password
+                         WHERE ID_Uczen = @Id";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ClassID", student.ClassID);
+                    command.Parameters.AddWithValue("@Name", (object)student.Name ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@SurName", (object)student.SurName ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@DateOfBirth", (object)student.DateOfBirth ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Gender", (object)student.Gender ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Pesel", (object)student.PESEL ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Login", (object)student.Login ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Password", (object)student.Password ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Id", student.Id);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteStudent(int studentId)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = "DELETE FROM Uczniowie WHERE ID_Uczen = @Id";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", studentId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AddStudent(Student student)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                string query = @"INSERT INTO Uczniowie 
+                        (Klasa_ID, Imie, Nazwisko, Data_Urodzenia, Plec, PESEL, Login, Haslo) 
+                         VALUES (@ClassID, @Name, @SurName, @DateOfBirth, @Gender, @Pesel, @Login, @Password)";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ClassID", student.ClassID);
+                    command.Parameters.AddWithValue("@Name", (object)student.Name ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@SurName", (object)student.SurName ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@DateOfBirth", (object)student.DateOfBirth ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Gender", (object)student.Gender ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Pesel", (object)student.PESEL ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Login", (object)student.Login ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Password", (object)student.Password ?? DBNull.Value);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

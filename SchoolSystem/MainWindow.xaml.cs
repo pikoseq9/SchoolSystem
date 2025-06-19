@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,22 +28,6 @@ namespace SchoolSystem
         public MainWindow()
         {
             InitializeComponent();
-
-            TestDatabaseConnectionAndDataLoad();
-        }
-
-        private void TestDatabaseConnectionAndDataLoad()
-        {
-            StudentRepository studentrepository = new StudentRepository();
-            Graderepository graderepository = new Graderepository();
-            ObservableCollection<Student>? students = new ObservableCollection<Student>();
-            ObservableCollection<Grade>? grades = new ObservableCollection<Grade>();
-
-            grades = graderepository.GetAllGrades();
-            students = studentrepository.GetAllStudents();
-            //MessageBox.Show($"{grades.Count}");
-            //MessageBox.Show($"{students.Count}");
-
         }
     }
 }

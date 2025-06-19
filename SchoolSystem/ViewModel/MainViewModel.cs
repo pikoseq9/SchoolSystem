@@ -59,11 +59,15 @@ namespace SchoolSystem.ViewModel
                 switch (loginVM.typ_konta)
                 {
                     case "uczen":
-                        CurrentView = new StudentDashboardView();
+                        CurrentView = new StudentDashboardView(loginVM.LoggedInUserId.Value);
                         break;
 
                     case "nauczyciel":
                         CurrentView = new TeacherDashboardView();
+                        break;
+
+                    case "dyrektor":
+                        CurrentView = new PrincipalDashboardView();
                         break;
 
                     default:

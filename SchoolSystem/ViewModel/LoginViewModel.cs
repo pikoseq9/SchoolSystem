@@ -30,6 +30,17 @@ namespace SchoolSystem.ViewModel
             }
         }
 
+        private int? _loggedInUserId;
+        public int? LoggedInUserId
+        {
+            get => _loggedInUserId;
+            set
+            {
+                _loggedInUserId = value;
+                OnPropertyChanged(nameof(LoggedInUserId));
+            }
+        }
+
         public Action OnLoginSuccess { get; set; }
 
         private string _username;
@@ -40,19 +51,19 @@ namespace SchoolSystem.ViewModel
             {
                 _username = value;
                 OnPropertyChanged(nameof(Username));
-                
+                (LoginCommand as RelayCommand)?.RaiseCanExecuteChanged();
             }
         }
 
         private string _password; // W ViewModelu lepiej przechowywać hasło w bezpieczny sposób, ale dla testów...
-        public string Password // To pole będzie ustawiane przez "binding" z Code-Behind
+        public string Password
         {
             get => _password;
             set
             {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
-                
+                (LoginCommand as RelayCommand)?.RaiseCanExecuteChanged();
             }
         }
 
@@ -76,9 +87,9 @@ namespace SchoolSystem.ViewModel
         }
 
         // Metoda wykonywana po kliknięciu przycisku Zaloguj
-        private void ExecuteLogin(object parameter)
+        private void ExecuteLogin(object _)
         {
-            string passwordFromView = parameter as string;
+            string passwordFromView = Password;
 
             var repositorys = new StudentRepository();
             var repositoryt = new TeacherRepository();
@@ -91,6 +102,7 @@ namespace SchoolSystem.ViewModel
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "uczen";
+                    LoggedInUserId = student.Id;
                     OnLoginSuccess?.Invoke();
                 }
                 else
@@ -108,7 +120,13 @@ namespace SchoolSystem.ViewModel
             {
                 var teacher = repositoryt.GetTeacherByLogin(Username?.Trim());
 
-                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
+                if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password) && teacher.Login == "dyrektor")
+                {
+                    ErrorMessage = "Logowanie pomyślne!";
+                    typ_konta = "dyrektor";
+                    OnLoginSuccess?.Invoke();
+                }
+                else if(teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
                 {
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "nauczyciel";
@@ -126,16 +144,11 @@ namespace SchoolSystem.ViewModel
         }
 
         //Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
-        private bool CanExecuteLogin(object parameter)
-        {  
+        private bool CanExecuteLogin(object _)
+        {
             return !string.IsNullOrWhiteSpace(Username) &&
-           (parameter is string password && !string.IsNullOrWhiteSpace(password));
+                   !string.IsNullOrWhiteSpace(Password);
         }
-
-
-
     }
-
-   
 }
 

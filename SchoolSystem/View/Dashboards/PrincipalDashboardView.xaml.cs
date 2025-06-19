@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SchoolSystem.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SchoolSystem.Model;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace SchoolSystem.View.Dashboards
 {
@@ -20,9 +23,11 @@ namespace SchoolSystem.View.Dashboards
     /// </summary>
     public partial class PrincipalDashboardView : UserControl
     {
+
         public PrincipalDashboardView()
         {
             InitializeComponent();
+            this.DataContext = new PrincipalDashboardViewModel();
         }
     }
 }

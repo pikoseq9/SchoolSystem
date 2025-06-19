@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="SchoolSystem.View.ManageTeacherView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
+             Height="400" Width="760">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Lista uczniów -->
+        <ListView Grid.Row="0"
+          ItemsSource="{Binding Teachers}"
+          SelectedItem="{Binding SelectedTeacher, Mode=TwoWay}"
+          Margin="0,0,0,10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Imię" Width="130" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Nazwisko" Width="130" DisplayMemberBinding="{Binding SurName}" />
+                    <GridViewColumn Header="Data urodzenia" Width="120" DisplayMemberBinding="{Binding DateOfBirth, StringFormat=d}" />
+                    <GridViewColumn Header="Płeć" Width="100" DisplayMemberBinding="{Binding Gender}" />
+                    <GridViewColumn Header="Numer Telefonu" Width="130" DisplayMemberBinding="{Binding PhoneNumber}" />
+                    <GridViewColumn Header="Login" Width="120" DisplayMemberBinding="{Binding Login}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+        <!-- Przycisk edytuj i usuń -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Dodaj" Command="{Binding AddTeacherCommand}" Margin="0,0,5,0" />
+            <Button Content="Edytuj" Command="{Binding EditTeacherCommand}" Margin="0,0,5,0" />
+            <Button Content="Usuń" Command="{Binding DeleteTeacherCommand}" Margin="0,0,5,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>
