@@ -26,14 +26,13 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        public ScheduleViewModel()
+        public ScheduleViewModel(int classId)
         {
             _scheduleRepository = new ScheduleRepository();
             _teacherRepository = new TeacherRepository();
             _subjectRepository = new SubjectRepository();
             _roomRepository = new RoomRepository();
-
-            _classId = 2; // Testowe ID klasy – do podmiany na dynamiczne ID po logowaniu
+            _classId = classId;
 
             LoadLessons();
         }

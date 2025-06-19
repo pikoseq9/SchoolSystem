@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using SchoolSystem.Repositories;
 using SchoolSystem.ViewModel.BaseClass;
+using SchoolSystem.Model;
 
 namespace SchoolSystem.ViewModel
 {
@@ -23,6 +25,8 @@ namespace SchoolSystem.ViewModel
             }
         }
         private readonly int _studentId;
+        private int _classId;
+        private  StudentRepository studentRepository = new StudentRepository();
 
         // Komendy, które będą wywoływane przez przyciski w StudentDashboardView.xaml
         public ICommand NavigateToGradesCommand { get; }
@@ -32,9 +36,13 @@ namespace SchoolSystem.ViewModel
         public StudentDashboardViewModel(int studentId)
         {
             _studentId = studentId;
-            // Inicjalizacja komend przy użyciu RelayCommand
-            // Zauważ, że konstruktor RelayCommand przyjmujący Action bez parametru jest używany
-            NavigateToGradesCommand = new RelayCommand(NavigateToGrades);
+            Student student = studentRepository.GetStudentById(_studentId);
+            _classId = student.ClassID;
+
+
+        // Inicjalizacja komend przy użyciu RelayCommand
+        // Zauważ, że konstruktor RelayCommand przyjmujący Action bez parametru jest używany
+        NavigateToGradesCommand = new RelayCommand(NavigateToGrades);
             NavigateToRemarksCommand = new RelayCommand(NavigateToRemarks);
             NavigateToScheduleCommand = new RelayCommand(NavigateToSchedule);
 
@@ -56,7 +64,7 @@ namespace SchoolSystem.ViewModel
 
         private void NavigateToSchedule()
         {
-            CurrentStudentDetailViewModel = new ScheduleViewModel();
+            CurrentStudentDetailViewModel = new ScheduleViewModel(_classId);
         }
     }
 
