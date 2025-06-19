@@ -110,6 +110,7 @@ namespace SchoolSystem.ViewModel
 
                 if (teacher != null && PasswordHelper.VerifyPassword(passwordFromView?.Trim(), teacher.Password))
                 {
+                    Session.CurrentTeacher = teacher;
                     ErrorMessage = "Logowanie pomyślne!";
                     typ_konta = "nauczyciel";
                     OnLoginSuccess?.Invoke();

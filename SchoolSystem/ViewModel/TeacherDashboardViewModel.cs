@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using SchoolSystem.ViewModel.BaseClass;
 
@@ -12,6 +13,7 @@ namespace SchoolSystem.ViewModel
     {
         private BaseViewModel _currentTeacherDetailViewModel;
         private readonly StudentListViewModel _studentListViewModel;
+
         public BaseViewModel CurrentTeacherDetailViewModel
         {
             get => _currentTeacherDetailViewModel;
@@ -37,6 +39,7 @@ namespace SchoolSystem.ViewModel
             NavigateToTeacherRemarksComand = new RelayCommand(NavigateToTeacherRemarksEdit);
             NavigateToTeacherGradesComand = new RelayCommand(NavigateToTeacherGradesEdit);
 
+
             // Ustaw domyślny widok przy załadowaniu StudentDashboardView (np. Oceny)
             NavigateToStudentList();
         }
@@ -49,11 +52,20 @@ namespace SchoolSystem.ViewModel
             CurrentTeacherDetailViewModel = _studentListViewModel;
 
         }
+
         private void NavigateToTeacherRemarksEdit()
         {
-            CurrentTeacherDetailViewModel = new TeacherRemarksViewModel();
-
+            if (_studentListViewModel.SelectedStudent != null)
+            {
+                int studentId = _studentListViewModel.SelectedStudent.Id;
+                CurrentTeacherDetailViewModel = new TeacherRemarksViewModel(studentId);
+            }
+            else
+            {
+                MessageBox.Show("Najpierw wybierz ucznia z listy.", "Brak zaznaczenia", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
+
 
         private void NavigateToTeacherGradesEdit()
         {

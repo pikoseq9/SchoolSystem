@@ -1,48 +1,63 @@
-﻿using SchoolSystem.Model;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+using SchoolSystem.Helpers;
+using SchoolSystem.Model;
 using SchoolSystem.Repositories;
 using SchoolSystem.ViewModel.BaseClass;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolSystem.ViewModel
 {
-    class TeacherRemarksViewModel : BaseViewModel
+    public class TeacherRemarksViewModel : BaseViewModel
     {
-        private readonly StudentRepository _studentrepository;
-        private ObservableCollection<Student>? _students;
+        private readonly RemarkRepository _remarkRepository;
+        private int _studentId;
 
+        public ObservableCollection<Remark> Remarks { get; set; }
 
-        public ObservableCollection<Student> Students
+        private Remark _selectedRemark;
+        public Remark SelectedRemark
         {
-            get { return _students; }
+            get => _selectedRemark;
             set
             {
-                _students = value;
-                OnPropertyChanged(nameof(Student));
+                _selectedRemark = value;
+                OnPropertyChanged(nameof(SelectedRemark));
+                (DeleteRemarkCommand as RelayCommand)?.RaiseCanExecuteChanged();
             }
         }
 
-        public TeacherRemarksViewModel()
+        public ICommand DeleteRemarkCommand { get; }
+        public ICommand AddRemarkCommand { get; }
+
+        public TeacherRemarksViewModel(int studentId)
         {
+            _studentId = studentId;
+            _remarkRepository = new RemarkRepository();
+            Remarks = _remarkRepository.GetRemarksWithTeacherName(studentId);
 
-            _studentrepository = new StudentRepository();
-            _students = new ObservableCollection<Student>();
+            DeleteRemarkCommand = new RelayCommand(_ => DeleteRemark(), _ => SelectedRemark != null);
+            AddRemarkCommand = new RelayCommand(_ => OpenAddRemarkWindow());
+        }
 
-
-
-            try
+        private void DeleteRemark()
+        {
+            if (SelectedRemark != null)
             {
-                _students.Clear();
-                _students = _studentrepository.GetAllStudents();
+                _remarkRepository.DeleteRemark(SelectedRemark.Id);
+                Remarks.Remove(SelectedRemark);
+                SelectedRemark = null;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Wystąpił błąd podczas ładowania uczniow: {ex.Message}");
-            }
+        }
+
+        private void OpenAddRemarkWindow()
+        {
+            var window = new SchoolSystem.View.AddRemarkWindow();
+            var vm = new AddRemarkViewModel(_studentId, Session.CurrentTeacher.Id, () => window.Close());
+            window.DataContext = vm;
+            window.ShowDialog();
+
+            Remarks = _remarkRepository.GetRemarksWithTeacherName(_studentId);
+            OnPropertyChanged(nameof(Remarks));
         }
     }
 }

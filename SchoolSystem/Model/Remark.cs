@@ -11,6 +11,10 @@ namespace SchoolSystem.Model
         public int Id { get; set; }
         public int StudentID { get; set; }
         public int TeacherID { get; set; }
-        public string? Value { get; set; }
+        public string Value { get; set; }
+
+        public string? TeacherName { get; set; }
     }
+
+
 }

@@ -30,11 +30,6 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Uczeń ID" Binding="{Binding Id}" Width="SizeToHeader"/>
-
-                <DataGridTextColumn Header="Imie" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn Header="Nazwisko" Binding="{Binding SurName}" Width="*"/>
-                <DataGridTextColumn Header="Data urodzenia" Binding="{Binding DateOfBirth, StringFormat='yyyy-MM-dd'}" Width="*"/>
                 <DataGridTextColumn Header="Klasa" Binding="{Binding ClassCode}" Width="Auto">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
@@ -42,6 +37,10 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Imie" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Nazwisko" Binding="{Binding SurName}" Width="*"/>
+                <DataGridTextColumn Header="Data urodzenia" Binding="{Binding DateOfBirth, StringFormat='yyyy-MM-dd'}" Width="*"/>
+                
 
                 <DataGridTextColumn Header="Pesel" Binding="{Binding PESEL}" Width="*"/>
                 <DataGridTextColumn Header="Płeć" Binding="{Binding Gender}" Width="Auto"/>
