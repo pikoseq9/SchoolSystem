@@ -1,129 +1,162 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using Microsoft.Data.Sqlite;
 using SchoolSystem.Model;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace SchoolSystem.Repositories
 {
     public class RemarkRepository
     {
-        private string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "szkola.db");
+        private readonly string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "szkola.db");
         private readonly TeacherRepository _teacherRepository;
-        public RemarkRepository(TeacherRepository teacherRepository)
+
+        public RemarkRepository(TeacherRepository? teacherRepository = null)
         {
-            _teacherRepository = teacherRepository ?? throw new ArgumentNullException(nameof(teacherRepository));
+            _teacherRepository = teacherRepository ?? new TeacherRepository();
         }
 
-        public ObservableCollection<Remark>? GetAllRemarksByStudentId(int studentId)
+        /// <summary>
+        /// Pobiera uwagi z bazy danych z użyciem JOIN (szybko, bez zewnętrznego repozytorium)
+        /// </summary>
+        public ObservableCollection<Remark> GetRemarksWithTeacherName(int studentId)
         {
-            ObservableCollection<Remark> remarks = new ObservableCollection<Remark>();
+            var remarks = new ObservableCollection<Remark>();
 
-            using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT u.ID_Uwaga, u.Tresc, n.Imie || ' ' || n.Nazwisko AS Wystawiajacy
+                FROM Uwagi u
+                JOIN Nauczyciele n ON u.Wystawiajacy_ID = n.ID_Nauczyciel
+                WHERE u.Uczen_ID = @StudentId";
+
+            command.Parameters.AddWithValue("@StudentId", studentId);
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                try
+                remarks.Add(new Remark
                 {
-                    connection.Open();
+                    Id = reader.GetInt32(0),
+                    Value = reader.GetString(1),
+                    TeacherName = reader.GetString(2)
+                });
+            }
 
-                    string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Uwagi WHERE Uczen_ID = @Id";
+            return remarks;
+        }
 
-                    using (SqliteCommand command = new SqliteCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Id", studentId);
-                        using (SqliteDataReader reader = command.ExecuteReader())
-                        {
+        /// <summary>
+        /// Alternatywna wersja: Pobiera uwagi z repozytorium nauczyciela (gdy potrzebujesz jego klasy lub danych kontaktowych itp.)
+        /// </summary>
+        public ObservableCollection<Remark> GetAllRemarksByStudentId(int studentId)
+        {
+            var remarks = new ObservableCollection<Remark>();
 
-                            while (reader.Read())
-                            {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            try
+            {
+                connection.Open();
 
-                                int teacherId = reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID"));
-                                string teacherFullName = "Nieznany Nauczyciel"; // Default value
+                string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Uwagi WHERE Uczen_ID = @Id";
+                using var command = new SqliteCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", studentId);
 
-                                // Use the injected TeacherRepository to get the teacher's name
-                                Teacher teacher = _teacherRepository.GetTeacherById(teacherId);
-                                if (teacher != null)
-                                {
-                                    teacherFullName = $"{teacher.Name} {teacher.SurName}";
-                                }
-
-                                remarks.Add(new Remark(
-                                    id: reader.GetInt32(reader.GetOrdinal("ID_Uwaga")),
-                                    studentID: reader.GetInt32(reader.GetOrdinal("Uczen_ID")),
-                                    teacherID: reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID")),
-                                    value: reader.GetString(reader.GetOrdinal("Tresc")), 
-                                    teacherFullName: teacherFullName
-                                ));
-                            }
-                        }
-                    }
-                }
-                catch (SqliteException ex)
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    Console.WriteLine($"Błąd bazy danych: {ex.Message}");
-                    throw new Exception("Nie udało się pobrać danych uwag z bazy.", ex);
-                }
-                catch (Exception ex)
-                {
-                    // Obsługa innych, ogólnych błędów
-                    Console.WriteLine($"Wystąpił nieoczekiwany błąd: {ex.Message}");
-                    throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych uwag.", ex);
+                    int teacherId = reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID"));
+                    string teacherFullName = "Nieznany Nauczyciel";
+
+                    var teacher = _teacherRepository.GetTeacherById(teacherId);
+                    if (teacher != null)
+                        teacherFullName = $"{teacher.Name} {teacher.SurName}";
+
+                    remarks.Add(new Remark(
+                        id: reader.GetInt32(reader.GetOrdinal("ID_Uwaga")),
+                        studentID: reader.GetInt32(reader.GetOrdinal("Uczen_ID")),
+                        teacherID: teacherId,
+                        value: reader.GetString(reader.GetOrdinal("Tresc")),
+                        teacherFullName: teacherFullName
+                    ));
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Błąd podczas pobierania uwag: {ex.Message}");
+                throw;
+            }
+
             return remarks;
         }
 
         public Remark? GetRemarkById(int remarkId)
         {
-            Remark? remark = null;
-
-            using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            try
             {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Uwagi WHERE ID_Uwaga = @Id";
+                connection.Open();
+                string query = "SELECT ID_Uwaga, Uczen_ID, Wystawiajacy_ID, Tresc FROM Uwagi WHERE ID_Uwaga = @Id";
 
-                    using (SqliteCommand command = new SqliteCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Id", remarkId);
+                using var command = new SqliteCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", remarkId);
 
-                        using (SqliteDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                int teacherId = reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID"));
-                                string teacherFullName = "Nieznany Nauczyciel"; // Default value
+                using var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    int teacherId = reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID"));
+                    string teacherFullName = "Nieznany Nauczyciel";
 
-                                // Use the injected TeacherRepository to get the teacher's name
-                                Teacher teacher = _teacherRepository.GetTeacherById(teacherId);
-                                if (teacher != null)
-                                {
-                                    teacherFullName = $"{teacher.Name} {teacher.SurName}";
-                                }
-                                remark = new Remark(
-                                    id: reader.GetInt32(reader.GetOrdinal("ID_Uwaga")),
-                                    studentID: reader.GetInt32(reader.GetOrdinal("Uczen_ID")),
-                                    teacherID: reader.GetInt32(reader.GetOrdinal("Wystawiajacy_ID")),
-                                    value: reader.GetString(reader.GetOrdinal("Tresc")), 
-                                    teacherFullName: teacherFullName
-                                );
-                            }
-                        }
-                    }
+                    var teacher = _teacherRepository.GetTeacherById(teacherId);
+                    if (teacher != null)
+                        teacherFullName = $"{teacher.Name} {teacher.SurName}";
+
+                    return new Remark(
+                        id: reader.GetInt32(reader.GetOrdinal("ID_Uwaga")),
+                        studentID: reader.GetInt32(reader.GetOrdinal("Uczen_ID")),
+                        teacherID: teacherId,
+                        value: reader.GetString(reader.GetOrdinal("Tresc")),
+                        teacherFullName: teacherFullName
+                    );
                 }
-                catch (SqliteException ex)
-                {
-                    Console.WriteLine($"Błąd bazy danych podczas pobierania uwagi o ID {remarkId}: {ex.Message}");
-                    throw new Exception($"Nie udało się pobrać uwagi o ID {remarkId}.", ex);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Wystąpił nieoczekiwany błąd podczas pobierania uwagi o ID {remarkId}: {ex.Message}");
-                    throw new Exception($"Wystąpił nieoczekiwany błąd podczas pobierania uwagi o ID {remarkId}.", ex);
-                }
-            }   
-            return remark;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] GetRemarkById: {ex.Message}");
+            }
+
+            return null;
+        }
+
+        public void InsertRemark(Remark remark)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO Uwagi (Uczen_ID, Wystawiajacy_ID, Tresc)
+                VALUES (@UczenID, @TeacherID, @Tresc)";
+
+            command.Parameters.AddWithValue("@UczenID", remark.StudentID);
+            command.Parameters.AddWithValue("@TeacherID", remark.TeacherID);
+            command.Parameters.AddWithValue("@Tresc", remark.Value);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteRemark(int remarkId)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = "DELETE FROM Uwagi WHERE ID_Uwaga = @Id";
+            command.Parameters.AddWithValue("@Id", remarkId);
+            command.ExecuteNonQuery();
         }
     }
 }

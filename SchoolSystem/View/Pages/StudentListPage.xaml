@@ -6,7 +6,47 @@
              xmlns:local="clr-namespace:SchoolSystem.View.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+               Text="Lista uczniów"
+               FontSize="28"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Margin="0,0,0,20"/>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Students}"  SelectedItem="{Binding SelectedStudent, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="1" RowBackground="White">
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="5,3"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Klasa" Binding="{Binding ClassCode}" Width="Auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Imie" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Nazwisko" Binding="{Binding SurName}" Width="*"/>
+                <DataGridTextColumn Header="Data urodzenia" Binding="{Binding DateOfBirth, StringFormat='yyyy-MM-dd'}" Width="*"/>
+                
+
+                <DataGridTextColumn Header="Pesel" Binding="{Binding PESEL}" Width="*"/>
+                <DataGridTextColumn Header="Płeć" Binding="{Binding Gender}" Width="Auto"/>
+
+
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

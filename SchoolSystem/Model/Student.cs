@@ -17,6 +17,9 @@ namespace SchoolSystem.Model
         public string? PESEL { get; set; }
         public string? Login { get; set; }
         public string? Password { get; set; }
+
+        public string ClassCode { get; set; }
+
         public Student(int id, int classID, string? name, string? surName, DateTime? dateOfBirth, string? gender, string? pesel, string? login, string? password)
         {
             Id = id;

@@ -15,6 +15,9 @@ namespace SchoolSystem.Model
         public decimal Value { get; set; }
         public string? Category { get; set; }
         public int Weight { get; set; }
+        public string SubjectName { get; set; }
+
+        public Grade() { }
 
         public Grade(int id, int studentID, int subjectID, DateTime date, decimal value, string? category, int weight)
         {

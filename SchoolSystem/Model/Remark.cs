@@ -14,6 +14,8 @@ namespace SchoolSystem.Model
         public string? Value { get; set; }
         public string TeacherFullName { get; set; }
 
+        public Remark() { }
+
         public Remark(int id, int studentID, int teacherID, string? value, string teacherFullName)
         {
             Id = id;
@@ -22,5 +24,10 @@ namespace SchoolSystem.Model
             Value = value;
             TeacherFullName = teacherFullName;
         }
+        
+
+        public string? TeacherName { get; set; }
     }
+
+
 }
