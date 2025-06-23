@@ -26,5 +26,10 @@ namespace SchoolSystem.View.Pages
             InitializeComponent();
             //this.DataContext = new StudentListViewModel();
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

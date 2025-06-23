@@ -3,6 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       Height="200" Width="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -28,8 +35,8 @@
 
         <!-- Przyciski -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}"/>
-            <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}"/>
+            <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}" Style="{StaticResource NavButtonStyle}"/>
+            <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}" Style="{StaticResource NavButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

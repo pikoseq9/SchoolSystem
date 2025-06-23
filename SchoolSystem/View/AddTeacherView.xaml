@@ -4,6 +4,14 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:helpers="clr-namespace:SchoolSystem.Helpers"
              Height="300" Width="350">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -61,8 +69,8 @@
         </StackPanel>
 
         <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}"/>
-            <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}"/>
+            <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}" Style="{StaticResource NavButtonStyle}"/>
+            <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}" Style="{StaticResource NavButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

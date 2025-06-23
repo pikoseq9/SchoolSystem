@@ -5,21 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolSystem"
         xmlns:viewModels="clr-namespace:SchoolSystem.ViewModel" mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="950">
+        Title="SchoolSystem" Height="550" Width="950">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
 
     <Window.DataContext>
         <viewModels:MainViewModel/>
     </Window.DataContext>
 
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="{Binding LoginButtonText}"  Command="{Binding ToggleLoginLogoutCommand}" Width="100" Height="30"
-            Background="#FF4CAF50" Foreground="White"
-            Margin="10"/>
+        <Button Content="Logowanie"
+            Command="{Binding ShowLoginPageCommand}"
+            Width="100" Height="40"
+            Style="{StaticResource NavButtonStyle}" Margin="5"/>
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
     </Grid>

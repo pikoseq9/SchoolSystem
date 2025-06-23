@@ -6,6 +6,13 @@
              xmlns:local="clr-namespace:SchoolSystem.View"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -17,7 +24,7 @@
         <!-- Kod klasy -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
             <Label Content="Kod klasy:" Width="100"/>
-            <TextBox Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+            <TextBox Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Style="{StaticResource Box}"/>
         </StackPanel>
 
         <!-- Wychowawca -->
@@ -26,13 +33,13 @@
             <ComboBox Width="200"
                       ItemsSource="{Binding AvailableTeachers}"
                       SelectedItem="{Binding SelectedTeacher, Mode=TwoWay}"
-                      DisplayMemberPath="FullName"/>
+                      DisplayMemberPath="FullName" Style="{StaticResource BoxComboBox}"/>
         </StackPanel>
 
         <!-- Przyciski -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}"/>
-            <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}"/>
+            <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}" Style="{StaticResource NavButtonStyle}" />
         </StackPanel>
     </Grid>
 </UserControl>

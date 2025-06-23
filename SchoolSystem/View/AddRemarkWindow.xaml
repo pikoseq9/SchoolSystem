@@ -6,7 +6,14 @@
         xmlns:local="clr-namespace:SchoolSystem.View"
         mc:Ignorable="d"
         Title="Nowa uwaga"
-        Height="200" Width="400">
+        Height="250" Width="400">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -16,11 +23,11 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Treść uwagi:" Grid.Row="0"/>
-        <TextBox Text="{Binding RemarkText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="0,5,0,10" AcceptsReturn="True" Height="60"/>
+        <TextBox Text="{Binding RemarkText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="0,5,0,10" AcceptsReturn="True" Height="60" />
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Dodaj" Command="{Binding ConfirmCommand}" Width="80" Margin="5"/>
-            <Button Content="Anuluj" Command="{Binding CancelCommand}" Width="80" Margin="5"/>
+            <Button Content="Dodaj" Command="{Binding ConfirmCommand}" Width="80" Margin="5" Style="{StaticResource NavButtonStyle}"/>
+            <Button Content="Anuluj" Command="{Binding CancelCommand}" Width="80" Margin="5" Style="{StaticResource NavButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Window>

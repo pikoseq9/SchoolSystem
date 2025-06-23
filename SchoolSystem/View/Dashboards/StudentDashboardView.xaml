@@ -7,16 +7,25 @@
              xmlns:vm="clr-namespace:SchoolSystem.ViewModel"  xmlns:pages="clr-namespace:SchoolSystem.View.Pages" mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900"
              d:DataContext="{d:DesignInstance Type=vm:StudentDashboardViewModel}">
-    <Grid>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="#f3f5f7">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Oceny" Command="{Binding NavigateToGradesCommand}" />
-            <Button Content="Plan Lekcji" Command="{Binding NavigateToScheduleCommand}" />
-            <Button Content="Uwagi" Command="{Binding NavigateToRemarksCommand}" />
+            <Button Content="Oceny" Command="{Binding NavigateToGradesCommand}" Style="{StaticResource NavButtonStyle}"  Margin="10" />
+            <Button Content="Plan Lekcji" Command="{Binding NavigateToScheduleCommand}" Style="{StaticResource NavButtonStyle}" Margin="10"  />
+            <Button Content="Uwagi" Command="{Binding NavigateToRemarksCommand}" Style="{StaticResource NavButtonStyle}" Margin="10"  />
         </StackPanel>
 
         <ContentControl Grid.Row="1" Margin="10"

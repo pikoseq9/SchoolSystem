@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
-    <Grid>
+<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Background="White" Margin="20">
         <!-- Nagłówki dni tygodnia -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -21,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <!-- nagłówek dni -->
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="60" />
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
@@ -30,15 +30,32 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
+            <Border Grid.Row="0" Grid.Column="0" Background="#607D8B"/>
 
-        <!-- Nagłówki dni -->
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="Poniedziałek" HorizontalAlignment="Center" FontWeight="Bold"/>
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="Wtorek" HorizontalAlignment="Center" FontWeight="Bold"/>
-        <TextBlock Grid.Row="0" Grid.Column="3" Text="Środa" HorizontalAlignment="Center" FontWeight="Bold"/>
-        <TextBlock Grid.Row="0" Grid.Column="4" Text="Czwartek" HorizontalAlignment="Center" FontWeight="Bold"/>
-        <TextBlock Grid.Row="0" Grid.Column="5" Text="Piątek" HorizontalAlignment="Center" FontWeight="Bold"/>
 
-        <!-- Godziny po lewej -->
+
+            <!-- Nagłówki dni -->
+            <Border Grid.Row="0" Grid.Column="1" Background="#607D8B">
+                <TextBlock Text="Poniedziałek" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="2" Background="#607D8B">
+                <TextBlock Text="Wtorek" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="3" Background="#607D8B">
+                <TextBlock Text="Środa" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="4" Background="#607D8B">
+                <TextBlock Text="Czwartek" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="5" Background="#607D8B">
+                <TextBlock Text="Piątek" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+            </Border>
+
+            <!-- Godziny po lewej -->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="08:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="2" Grid.Column="0" Text="09:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="3" Grid.Column="0" Text="10:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -89,7 +106,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="LightBlue" CornerRadius="5" Padding="5" Margin="3" BorderBrush="LightSteelBlue" BorderThickness="1">
+                        <Border Background="#d5dee2" CornerRadius="5" Padding="5" Margin="3" BorderBrush="LightSteelBlue" BorderThickness="1">
                         <StackPanel>
                             <TextBlock Text="{Binding SubjectName}" FontWeight="Bold"/>
                             <TextBlock Text="{Binding TeacherName}" FontSize="11"/>
@@ -100,5 +117,5 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Grid>
-
+   </ScrollViewer>
 </UserControl>
