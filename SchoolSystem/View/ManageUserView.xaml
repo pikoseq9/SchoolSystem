@@ -3,6 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
              Height="400" Width="760">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -30,9 +38,9 @@
 
         <!-- Przycisk edytuj i usuń -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Dodaj" Command="{Binding AddStudentCommand}" Margin="0,0,5,0" />
-            <Button Content="Edytuj" Command="{Binding EditStudentCommand}" Margin="0,0,5,0" />
-            <Button Content="Usuń" Command="{Binding DeleteStudentCommand}" Margin="0,0,5,0" />
+            <Button Content="Dodaj" Command="{Binding AddStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+            <Button Content="Edytuj" Command="{Binding EditStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+            <Button Content="Usuń" Command="{Binding DeleteStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -8,6 +8,13 @@
              xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="950">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Grid>
         <!-- Dodajemy dwa wiersze: górny na przyciski, dolny na zawartość -->
@@ -20,9 +27,9 @@
 
         <!-- Przyciski wyboru widoku -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10" Grid.Row="0">
-            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="5" Width="300"/>
-            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="5" Width="300"/>
-            <Button Content="Klasy" Command="{Binding ShowManageClassCommand}" Margin="5" Width="300"/>
+            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="3" Width="300" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="3" Width="300" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Klasy" Command="{Binding ShowManageClassCommand}" Margin="3" Width="300" Style="{StaticResource NavButtonStyle}" />
         </StackPanel>
 
         <!-- Dynamiczna zawartość zależna od wybranego widoku -->

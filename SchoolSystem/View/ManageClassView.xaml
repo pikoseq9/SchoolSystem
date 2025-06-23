@@ -4,6 +4,14 @@
              xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
              Height="400" Width="760">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -14,8 +22,8 @@
         <ListView Grid.Row="0"
                   ItemsSource="{Binding Classes}"
                   SelectedItem="{Binding SelectedClass, Mode=TwoWay}"
-                  Margin="0,0,0,10">
-            <ListView.View>
+                  Margin="0,0,0,10" >
+            <ListView.View >
                 <GridView>
                     <GridViewColumn Header="Kod klasy" Width="150" DisplayMemberBinding="{Binding Code}" />
                     <GridViewColumn Header="Wychowawca" Width="200" DisplayMemberBinding="{Binding TeacherFullName}" />
@@ -25,9 +33,9 @@
 
         <!-- Przycisk dodaj, edytuj, usuń -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Dodaj" Command="{Binding AddClassCommand}" Margin="0,0,5,0" />
-            <Button Content="Edytuj" Command="{Binding EditClassCommand}" Margin="0,0,5,0" />
-            <Button Content="Usuń" Command="{Binding DeleteClassCommand}" Margin="0,0,5,0" />
+            <Button Content="Dodaj" Command="{Binding AddClassCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+            <Button Content="Edytuj" Command="{Binding EditClassCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+            <Button Content="Usuń" Command="{Binding DeleteClassCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

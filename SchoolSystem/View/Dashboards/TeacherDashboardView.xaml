@@ -8,7 +8,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=vm:TeacherDashboardViewModel}">
-    <Grid>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="#f3f5f7">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -16,7 +25,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Uczniowie" Command="{Binding NavigateToStudentListCommand}" />
+            <Button Content="Uczniowie" Command="{Binding NavigateToStudentListCommand}" Style="{StaticResource NavButtonStyle}"  />
         </StackPanel>
 
         <ContentControl Grid.Row="1" Margin="10"
@@ -38,9 +47,9 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
             <Button Content="Edytuj oceny" Width="150" Margin="10,0"
-                    Command="{Binding NavigateToTeacherGradesComand}" />
+                    Command="{Binding NavigateToTeacherGradesComand}" Style="{StaticResource NavButtonStyle}" />
             <Button Content="Edytuj uwagi" Width="150" Margin="10,0"
-                    Command="{Binding NavigateToTeacherRemarksComand}" />
+                    Command="{Binding NavigateToTeacherRemarksComand}" Style="{StaticResource NavButtonStyle}"  />
         </StackPanel>
 
 
