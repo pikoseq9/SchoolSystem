@@ -100,5 +100,97 @@ namespace SchoolSystem.Repositories
 
             return subject;
         }
+
+        public void AddSubject(Subject newSubject)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = @"INSERT INTO Przedmioty (Nazwa)
+                             VALUES (@Name)";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Name", newSubject.Name ?? (object)DBNull.Value);
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateSubject(Subject updatedSubject)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = @"UPDATE Przedmioty
+                             SET Nazwa = @Name
+                             WHERE ID_Przedmiot = @Id";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Name", updatedSubject.Name ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Id", updatedSubject.Id);
+            command.ExecuteNonQuery();
+        }
+
+        public bool CanDeleteSubject(int subjectId)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            // Przykład - zakładam, że tabela Lekcje ma kolumnę Przedmiot_ID
+            string query = "SELECT COUNT(*) FROM Lekcje WHERE Przedmiot_ID = @SubjectId";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@SubjectId", subjectId);
+
+            long count = (long)command.ExecuteScalar();
+
+            return count == 0; // można usunąć, jeśli brak powiązań
+        }
+
+        public bool SubjectNameExistsExceptId(string name, int id)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = "SELECT COUNT(*) FROM Przedmioty WHERE Nazwa = @Name AND ID_Przedmiot != @Id";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Name", name);
+            command.Parameters.AddWithValue("@Id", id);
+
+            long count = (long)command.ExecuteScalar();
+
+            return count > 0;
+        }
+
+        public bool SubjectNameExists(string name)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = "SELECT COUNT(*) FROM Przedmioty WHERE Nazwa = @Name"; // zmień na właściwą nazwę tabeli i kolumny
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Name", name);
+
+            long count = (long)command.ExecuteScalar();
+
+            return count > 0;
+        }
+
+        public bool DeleteSubject(int subjectId)
+        {
+            if (!CanDeleteSubject(subjectId))
+                return false;
+
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = "DELETE FROM Przedmioty WHERE ID_Przedmiot = @Id";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Id", subjectId);
+            command.ExecuteNonQuery();
+
+            return true;
+        }
     }
 }

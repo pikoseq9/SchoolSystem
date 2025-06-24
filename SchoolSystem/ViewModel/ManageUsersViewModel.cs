@@ -1,14 +1,10 @@
 ﻿using SchoolSystem.Model;
 using SchoolSystem.ViewModel.BaseClass;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows;
+using System.Windows.Input;
 using SchoolSystem.View;
 using SchoolSystem.Repositories;
 
@@ -41,6 +37,27 @@ namespace SchoolSystem.ViewModel
             }
         }
 
+        private BaseViewModel _currentDetailViewModel;
+        public BaseViewModel CurrentDetailViewModel
+        {
+            get => _currentDetailViewModel;
+            set
+            {
+                _currentDetailViewModel = value;
+                OnPropertyChanged(nameof(CurrentDetailViewModel));
+                OnPropertyChanged(nameof(IsDetailViewVisible));
+                OnPropertyChanged(nameof(IsStudentListVisible));
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        public bool IsDetailViewVisible => CurrentDetailViewModel != null;
+        public bool IsStudentListVisible => CurrentDetailViewModel == null;
+
+        public ICommand ViewGradesCommand { get; }
+        public ICommand ViewRemarksCommand { get; }
+        public ICommand CloseDetailViewCommand { get; }
+
         private Student _selectedStudent;
         public Student SelectedStudent
         {
@@ -61,11 +78,36 @@ namespace SchoolSystem.ViewModel
         {
             Students = new ObservableCollection<Student>();
 
-            EditStudentCommand = new RelayCommand(EditStudent, () => SelectedStudent != null);
-            AddStudentCommand = new RelayCommand(AddStudent);
-            DeleteStudentCommand = new RelayCommand(DeleteStudent, () => SelectedStudent != null);
+            EditStudentCommand = new RelayCommand(EditStudent, () => SelectedStudent != null && IsStudentListVisible);
+            AddStudentCommand = new RelayCommand(AddStudent, () => IsStudentListVisible);
+            DeleteStudentCommand = new RelayCommand(DeleteStudent, () => SelectedStudent != null && IsStudentListVisible);
+
+            ViewGradesCommand = new RelayCommand(ViewGrades, () => SelectedStudent != null && IsStudentListVisible);
+            ViewRemarksCommand = new RelayCommand(ViewRemarks, () => SelectedStudent != null && IsStudentListVisible);
+
+            CloseDetailViewCommand = new RelayCommand(() => CurrentDetailViewModel = null, () => IsDetailViewVisible);
 
             LoadStudents();
+        }
+
+        private void ViewGrades()
+        {
+            if (SelectedStudent == null)
+            {
+                MessageBox.Show("Najpierw wybierz ucznia z listy.", "Brak zaznaczenia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            CurrentDetailViewModel = new TeacherGradesViewModel(SelectedStudent.Id);
+        }
+
+        private void ViewRemarks()
+        {
+            if (SelectedStudent == null)
+            {
+                MessageBox.Show("Najpierw wybierz ucznia z listy.", "Brak zaznaczenia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            CurrentDetailViewModel = new TeacherRemarksViewModel(SelectedStudent.Id);
         }
 
         private void LoadStudents()
@@ -87,7 +129,6 @@ namespace SchoolSystem.ViewModel
                 MessageBox.Show($"Błąd ładowania uczniów: {ex.Message}");
             }
         }
-
 
         private void EditStudent()
         {
@@ -169,7 +210,5 @@ namespace SchoolSystem.ViewModel
                 }
             }
         }
-
     }
-
 }

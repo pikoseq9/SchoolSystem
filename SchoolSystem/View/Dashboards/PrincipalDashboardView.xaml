@@ -17,6 +17,7 @@
     </UserControl.Resources>
 
     <Grid>
+
         <!-- Dodajemy dwa wiersze: górny na przyciski, dolny na zawartość -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -27,9 +28,11 @@
 
         <!-- Przyciski wyboru widoku -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10" Grid.Row="0">
-            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="3" Width="300" Style="{StaticResource NavButtonStyle}" />
-            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="3" Width="300" Style="{StaticResource NavButtonStyle}" />
-            <Button Content="Klasy" Command="{Binding ShowManageClassCommand}" Margin="3" Width="300" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Klasy" Command="{Binding ShowManageClassCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Sale" Command="{Binding ShowManageRoomCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
+            <Button Content="Przedmioty" Command="{Binding ShowManageSubjectCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
         </StackPanel>
 
         <!-- Dynamiczna zawartość zależna od wybranego widoku -->
@@ -44,7 +47,14 @@
                 <DataTemplate DataType="{x:Type vm:ManageClassViewModel}">
                     <view:ManageClassView />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ManageRoomViewModel}">
+                    <view:ManageRoomView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ManageSubjectViewModel}">
+                    <view:ManageSubjectView />
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
+
     </Grid>
 </UserControl>

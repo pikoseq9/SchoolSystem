@@ -93,5 +93,82 @@ namespace SchoolSystem.Repositories
 
             return room;
         }
+
+        public void AddRoom(Room newRoom)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = @"INSERT INTO Sale (Nr_Sali)
+                             VALUES (@Number)";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Number", newRoom.Number ?? (object)DBNull.Value);
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateRoom(Room updatedRoom)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = @"UPDATE Sale
+                             SET Nr_Sali = @Number
+                             WHERE ID_Sala = @Id";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Number", updatedRoom.Number ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Id", updatedRoom.ID);
+            command.ExecuteNonQuery();
+        }
+
+        // Sprawdzenie, czy można usunąć salę (np. brak powiązań z lekcjami)
+        public bool CanDeleteRoom(int roomId)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = "SELECT COUNT(*) FROM Lekcje WHERE Sala_ID = @RoomId";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@RoomId", roomId);
+
+            long count = (long)command.ExecuteScalar();
+
+            return count == 0; // można usunąć jeśli brak powiązań
+        }
+
+        public bool RoomNumberExists(string number)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = "SELECT COUNT(*) FROM Sale WHERE Nr_Sali = @Number";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Number", number);
+
+            long count = (long)command.ExecuteScalar();
+
+            return count > 0;
+        }
+
+
+        public bool DeleteRoom(int roomId)
+        {
+            if (!CanDeleteRoom(roomId))
+                return false;
+
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = "DELETE FROM Sale WHERE ID_Sala = @Id";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@Id", roomId);
+            command.ExecuteNonQuery();
+
+            return true;
+        }
     }
 }

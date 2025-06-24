@@ -1,46 +1,67 @@
 ﻿<UserControl x:Class="SchoolSystem.View.ManageUserView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:SchoolSystem.ViewModel"
+             xmlns:vm="clr-namespace:SchoolSystem.ViewModel" 
+             xmlns:views="clr-namespace:SchoolSystem.View.Pages"
              Height="400" Width="760">
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Lista uczniów -->
-        <ListView Grid.Row="0"
-          ItemsSource="{Binding Students}"
-          SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
-          Margin="0,0,0,10">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Klasa" Width="50" DisplayMemberBinding="{Binding ClassName}" />
-                    <GridViewColumn Header="Imię" Width="120" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Nazwisko" Width="120" DisplayMemberBinding="{Binding SurName}" />
-                    <GridViewColumn Header="Data urodzenia" Width="120" DisplayMemberBinding="{Binding DateOfBirth, StringFormat=d}" />
-                    <GridViewColumn Header="Płeć" Width="80" DisplayMemberBinding="{Binding Gender}" />
-                    <GridViewColumn Header="PESEL" Width="120" DisplayMemberBinding="{Binding PESEL}" />
-                    <GridViewColumn Header="Login" Width="120" DisplayMemberBinding="{Binding Login}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- Sekcja listy uczniów i przycisków -->
+        <StackPanel Grid.Row="0" Visibility="{Binding IsStudentListVisible, Converter={StaticResource BoolToVis}}">
+            <ListView ItemsSource="{Binding Students}"
+                      SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
+                      Margin="0,0,0,10">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Klasa" Width="50" DisplayMemberBinding="{Binding ClassName}" />
+                        <GridViewColumn Header="Imię" Width="120" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Nazwisko" Width="120" DisplayMemberBinding="{Binding SurName}" />
+                        <GridViewColumn Header="Data urodzenia" Width="120" DisplayMemberBinding="{Binding DateOfBirth, StringFormat=d}" />
+                        <GridViewColumn Header="Płeć" Width="80" DisplayMemberBinding="{Binding Gender}" />
+                        <GridViewColumn Header="PESEL" Width="120" DisplayMemberBinding="{Binding PESEL}" />
+                        <GridViewColumn Header="Login" Width="120" DisplayMemberBinding="{Binding Login}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
 
-
-        <!-- Przycisk edytuj i usuń -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Dodaj" Command="{Binding AddStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
-            <Button Content="Edytuj" Command="{Binding EditStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
-            <Button Content="Usuń" Command="{Binding DeleteStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Podgląd ocen" Command="{Binding ViewGradesCommand}" Width="120" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}" />
+                <Button Content="Podgląd uwag" Command="{Binding ViewRemarksCommand}" Width="120" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}" />
+                <Button Content="Dodaj" Command="{Binding AddStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+                <Button Content="Edytuj" Command="{Binding EditStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+                <Button Content="Usuń" Command="{Binding DeleteStudentCommand}" Margin="0,0,5,0" Style="{StaticResource NavButtonStyle}"/>
+            </StackPanel>
         </StackPanel>
+
+        <!-- Podwidok (oceny/uwagi) -->
+        <Grid Grid.Row="0" Visibility="{Binding IsDetailViewVisible, Converter={StaticResource BoolToVis}}">
+            <Button Content="← Wróć do listy" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,10"
+                    Command="{Binding CloseDetailViewCommand}" Width="140" Style="{StaticResource NavButtonStyle}"/>
+
+            <ContentControl Margin="0,40,0,0" Content="{Binding CurrentDetailViewModel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:TeacherGradesViewModel}">
+                        <views:TeacherGradesPage />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:TeacherRemarksViewModel}">
+                        <views:TeacherRemarksPage />
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+        </Grid>
     </Grid>
 </UserControl>

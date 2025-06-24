@@ -21,13 +21,16 @@ namespace SchoolSystem.ViewModel
         public ICommand ShowManageUsersCommand { get; }
         public ICommand ShowManageTeachersCommand { get; }
         public ICommand ShowManageClassCommand { get; }
+        public ICommand ShowManageSubjectCommand { get; }
+        public ICommand ShowManageRoomCommand { get; }
 
         public PrincipalDashboardViewModel()
         {
             ShowManageUsersCommand = new RelayCommand(ShowManageUsers);
             ShowManageTeachersCommand = new RelayCommand(ShowManageTeachers);
             ShowManageClassCommand = new RelayCommand(ShowManageClass);
-
+            ShowManageRoomCommand = new RelayCommand(ShowManageRoom);
+            ShowManageSubjectCommand = new RelayCommand(ShowManageSubject);
 
             CurrentViewModel = null;
         }
@@ -43,6 +46,14 @@ namespace SchoolSystem.ViewModel
         private void ShowManageClass()
         {
             CurrentViewModel = new ManageClassViewModel();
+        }
+        private void ShowManageSubject()
+        {
+            CurrentViewModel = new ManageSubjectViewModel();
+        }
+        private void ShowManageRoom()
+        {
+            CurrentViewModel = new ManageRoomViewModel();
         }
 
     }
