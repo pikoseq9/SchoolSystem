@@ -33,7 +33,7 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Przedmiot ID" Binding="{Binding SubjectID}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="Przedmiot" Binding="{Binding SubjectName}" Width="SizeToHeader"/>
 
                 <DataGridTextColumn Header="Data" Binding="{Binding Date, StringFormat='dd.MM.yyyy'}" Width="*"/>
 

@@ -30,7 +30,7 @@ namespace SchoolSystem.ViewModel
             try
             {
                 _grades.Clear();
-                _grades = _graderepository.GetAllGradesByStudentId(studentId);
+                _grades = _graderepository.GetGradesWithSubjectNameByStudentId(studentId);
             }
             catch (Exception ex)
             {
