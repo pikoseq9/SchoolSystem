@@ -11,6 +11,7 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -25,8 +26,11 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Uczniowie" Command="{Binding NavigateToStudentListCommand}" Style="{StaticResource NavButtonStyle}"  />
+            <Button Content="Uczniowie" Command="{Binding NavigateToStudentListCommand}" Style="{StaticResource NavButtonStyle}"  Margin="10, 0"/>
+            <Button Content="Plan lekcji" Command="{Binding NavigateToTeacherLessonsListCommand}" Style="{StaticResource NavButtonStyle}"  Margin="10, 0"/>
         </StackPanel>
+
+        
 
         <ContentControl Grid.Row="1" Margin="10"
                         Content="{Binding CurrentTeacherDetailViewModel}">
@@ -34,22 +38,25 @@
                 <DataTemplate DataType="{x:Type vm:StudentListViewModel}">
                     <pages:StudentListPage />
                 </DataTemplate>
-                
-                
+                <DataTemplate DataType="{x:Type vm:TeacherScheduleViewModel}">
+                    <pages:TeacherSchedulePage />
+                </DataTemplate>
+
                 <DataTemplate DataType="{x:Type vm:TeacherGradesViewModel}">
                     <pages:TeacherGradesPage />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:TeacherRemarksViewModel}">
                     <pages:TeacherRemarksPage />
                 </DataTemplate>
+                
             </ContentControl.Resources>
         </ContentControl>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10" Visibility="{Binding IsScheduleViewVisible, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}">
             <Button Content="Edytuj oceny" Width="150" Margin="10,0"
-                    Command="{Binding NavigateToTeacherGradesComand}" Style="{StaticResource NavButtonStyle}" />
+            Command="{Binding NavigateToTeacherGradesComand}" Style="{StaticResource NavButtonStyle}" />
             <Button Content="Edytuj uwagi" Width="150" Margin="10,0"
-                    Command="{Binding NavigateToTeacherRemarksComand}" Style="{StaticResource NavButtonStyle}"  />
+            Command="{Binding NavigateToTeacherRemarksComand}" Style="{StaticResource NavButtonStyle}"  />
         </StackPanel>
 
 

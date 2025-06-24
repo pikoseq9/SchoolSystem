@@ -1,5 +1,4 @@
-﻿using SchoolSystem.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SchoolSystem.View.Pages
+namespace SchoolSystem.View
 {
     /// <summary>
-    /// Logika interakcji dla klasy StudentListPage.xaml
+    /// Logika interakcji dla klasy ManageLessonView.xaml
     /// </summary>
-    public partial class StudentListPage : UserControl
+    public partial class ManageLessonView : UserControl
     {
-        public StudentListPage()
+        public ManageLessonView()
         {
             InitializeComponent();
-        }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

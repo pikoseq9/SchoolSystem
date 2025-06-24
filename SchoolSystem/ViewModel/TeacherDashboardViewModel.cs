@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using SchoolSystem.View.Pages;
 using SchoolSystem.ViewModel.BaseClass;
+using SchoolSystem.Helpers;
 
 namespace SchoolSystem.ViewModel
 {
@@ -28,6 +30,7 @@ namespace SchoolSystem.ViewModel
         public ICommand NavigateToStudentListCommand { get; }
         public ICommand NavigateToTeacherRemarksComand { get; }
         public ICommand NavigateToTeacherGradesComand { get; }
+        public ICommand NavigateToTeacherLessonsListCommand { get; }
 
         public TeacherDashboardViewModel()
         {
@@ -38,6 +41,7 @@ namespace SchoolSystem.ViewModel
             NavigateToStudentListCommand = new RelayCommand(NavigateToStudentList);
             NavigateToTeacherRemarksComand = new RelayCommand(NavigateToTeacherRemarksEdit);
             NavigateToTeacherGradesComand = new RelayCommand(NavigateToTeacherGradesEdit);
+            NavigateToTeacherLessonsListCommand = new RelayCommand(NavigateToTeacherLessonsList);
 
 
             // Ustaw domyślny widok przy załadowaniu StudentDashboardView (np. Oceny)
@@ -48,9 +52,19 @@ namespace SchoolSystem.ViewModel
         private void NavigateToStudentList()
         {
             //CurrentTeacherDetailViewModel = new StudentListViewModel();
-
+            IsScheduleViewVisible = true;
             CurrentTeacherDetailViewModel = _studentListViewModel;
 
+        }
+
+        private void NavigateToTeacherLessonsList()
+        {
+            int teacherId = Session.CurrentTeacher.Id; // <-- lub inny sposób na ID nauczyciela
+            IsScheduleViewVisible = false;
+            var page = new TeacherSchedulePage();
+            page.DataContext = new TeacherScheduleViewModel(teacherId);
+
+            CurrentTeacherDetailViewModel = page.DataContext as BaseViewModel;
         }
 
         private void NavigateToTeacherRemarksEdit()
@@ -78,6 +92,17 @@ namespace SchoolSystem.ViewModel
             else
             {
                 System.Windows.MessageBox.Show("Najpierw wybierz ucznia z listy.", "Brak zaznaczenia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+            }
+        }
+
+        private bool _isScheduleViewVisible;
+        public bool IsScheduleViewVisible
+        {
+            get => _isScheduleViewVisible;
+            set
+            {
+                _isScheduleViewVisible = value;
+                OnPropertyChanged();
             }
         }
 
