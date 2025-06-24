@@ -19,6 +19,11 @@ namespace SchoolSystem.Model
         public string StartTime { get; set; }           
         public int Duration { get; set; }
 
+        public string ClassName { get; set; }
+        public string SubjectName { get; set; }
+
+        public Lesson() { }
+
         public Lesson(int id, int roomID, int subjectID, int classID, int teacherID, string dayOfWeek, string startTime, int duration)
         {
             Id = id;

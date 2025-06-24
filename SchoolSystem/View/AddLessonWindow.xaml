@@ -1,0 +1,61 @@
+﻿<Window x:Class="SchoolSystem.View.AddLessonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dodaj lekcję" Height="350" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Przedmiot:" Grid.Row="0" Margin="0,5"/>
+        <ComboBox ItemsSource="{Binding Subjects}" 
+                  SelectedItem="{Binding SelectedSubject}" 
+                  DisplayMemberPath="Name"
+                  Grid.Row="0" Margin="100,5,0,5"/>
+
+        <TextBlock Text="Sala:" Grid.Row="1" Margin="0,5"/>
+        <ComboBox ItemsSource="{Binding Rooms}" 
+                  SelectedItem="{Binding SelectedRoom}" 
+                  DisplayMemberPath="Number"
+                  Grid.Row="1" Margin="100,5,0,5"/>
+        
+        <TextBlock Text="Nauczyciel:" Grid.Row="2" Margin="0,5"/>
+        <ComboBox ItemsSource="{Binding Teachers}"
+          DisplayMemberPath="FullName"
+          SelectedItem="{Binding SelectedTeacher}"
+          Grid.Row="2" Margin="100,5,0,5"/>
+
+        <TextBlock Text="Dzień tygodnia:" Grid.Row="3" Margin="0,5"/>
+        <ComboBox ItemsSource="{Binding DaysOfWeek}" 
+                  SelectedItem="{Binding SelectedDay}" 
+                  Grid.Row="3" Margin="100,5,0,5"/>
+
+        <TextBlock Text="Godzina rozpoczęcia:" Grid.Row="4" Margin="0,5"/>
+        <ComboBox ItemsSource="{Binding AvailableStartTimes}"
+          SelectedItem="{Binding StartTime}"
+           Grid.Row="4" Margin="150,5,0,5"/>
+
+
+        <TextBlock Text="Czas trwania (min):" Grid.Row="5" Margin="0,5"/>
+        <TextBox Text="{Binding Duration}" Grid.Row="5" Margin="150,5,0,5"/>
+
+        <Button Content="Zapisz" Grid.Row="6" HorizontalAlignment="Center" Margin="0,30,0,0" Width="100" Style="{StaticResource NavButtonStyle}"
+                Command="{Binding SaveCommand}" />
+    </Grid>
+</Window>

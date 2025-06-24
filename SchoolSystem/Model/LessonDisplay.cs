@@ -1,4 +1,6 @@
-﻿namespace SchoolSystem.Model
+﻿using System.Windows.Input;
+
+namespace SchoolSystem.Model
 {
     public class LessonDisplay
     {
@@ -13,5 +15,7 @@
 
         public int GridRow { get; set; }
         public int GridColumn { get; set; }
+
+        public ICommand? DeleteCommand { get; set; }
     }
 }

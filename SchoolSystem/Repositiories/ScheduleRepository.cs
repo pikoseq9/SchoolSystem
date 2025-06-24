@@ -151,5 +151,88 @@ namespace SchoolSystem.Repositories
             }
             return lesson;
         }
+
+        public void AddLesson(Lesson lesson)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+        INSERT INTO Lekcje (Sala_ID, Przedmiot_ID, Klasa_ID, Prowadzacy_ID, Dzien_Tygodnia, Godzina_Rozpoczecia, Czas_Trwania)
+        VALUES (@RoomID, @SubjectID, @ClassID, @TeacherID, @Day, @StartTime, @Duration)";
+            command.Parameters.AddWithValue("@RoomID", lesson.RoomID);
+            command.Parameters.AddWithValue("@SubjectID", lesson.SubjectID);
+            command.Parameters.AddWithValue("@ClassID", lesson.ClassID);
+            command.Parameters.AddWithValue("@TeacherID", lesson.TeacherID);
+            command.Parameters.AddWithValue("@Day", lesson.DayOfWeek);
+            command.Parameters.AddWithValue("@StartTime", lesson.StartTime);
+            command.Parameters.AddWithValue("@Duration", lesson.Duration);
+
+            command.ExecuteNonQuery();
+        }
+
+
+
+        public void DeleteLessonById(int id)
+        {
+            using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM Lekcje WHERE ID_Lekcja = @Id";
+
+                    using (SqliteCommand command = new SqliteCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (SqliteException ex)
+                {
+                    Console.WriteLine($"Błąd podczas usuwania lekcji: {ex.Message}");
+                    throw new Exception("Nie udało się usunąć lekcji z bazy.", ex);
+                }
+            }
+        }
+
+        public bool IsLessonOverlapping(int classId, string dayOfWeek, string startTime, int duration)
+        {
+            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            connection.Open();
+
+            string query = @"
+        SELECT Godzina_Rozpoczecia, Czas_Trwania
+        FROM Lekcje
+        WHERE Klasa_ID = @ClassId AND Dzien_Tygodnia = @DayOfWeek";
+
+            using var command = new SqliteCommand(query, connection);
+            command.Parameters.AddWithValue("@ClassId", classId);
+            command.Parameters.AddWithValue("@DayOfWeek", dayOfWeek);
+
+            using var reader = command.ExecuteReader();
+            var newStart = TimeSpan.Parse(startTime);
+            var newEnd = newStart.Add(TimeSpan.FromMinutes(duration));
+
+            while (reader.Read())
+            {
+                var existingStart = TimeSpan.Parse(reader.GetString(0));
+                var existingEnd = existingStart.Add(TimeSpan.FromMinutes(reader.GetInt32(1)));
+
+                if (newStart < existingEnd && existingStart < newEnd)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
     }
+
+    
+
 }
