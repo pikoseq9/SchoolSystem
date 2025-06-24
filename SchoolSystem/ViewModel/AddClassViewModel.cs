@@ -71,6 +71,18 @@ namespace SchoolSystem.ViewModel
                 return;
             }
 
+            if (Code.Length < 2 || Code.Length > 10)
+            {
+                MessageBox.Show("Kod klasy musi mieć od 2 do 10 znaków.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (_classRepository.ClassCodeExists(Code))
+            {
+                MessageBox.Show("Kod klasy już istnieje. Wprowadź unikalny kod.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (SelectedTeacher == null)
             {
                 MessageBox.Show("Wybierz wychowawcę.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -79,8 +91,16 @@ namespace SchoolSystem.ViewModel
 
             _class.ClassTeacherID = SelectedTeacher.Id;
 
-            _classRepository.AddClass(_class);
-            CloseRequested?.Invoke(this, true);
+            try
+            {
+                _classRepository.AddClass(_class);
+                MessageBox.Show("Klasa została dodana pomyślnie.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                CloseRequested?.Invoke(this, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas zapisu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Cancel()

@@ -187,6 +187,44 @@ namespace SchoolSystem.Repositories
             }
         }
 
+        public bool StudentExistsByPESEL(string pesel)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                using (var pragma = new SqliteCommand("PRAGMA foreign_keys = ON;", connection))
+                    pragma.ExecuteNonQuery();
+
+                string query = "SELECT COUNT(*) FROM Uczniowie WHERE PESEL = @PESEL";
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@PESEL", pesel);
+                    long count = (long)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        public bool StudentExistsByLogin(string login)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                using (var pragma = new SqliteCommand("PRAGMA foreign_keys = ON;", connection))
+                    pragma.ExecuteNonQuery();
+
+                string query = "SELECT COUNT(*) FROM Uczniowie WHERE Login = @Login";
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Login", login);
+                    long count = (long)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
         public void DeleteStudent(int studentId)
         {
             using (var connection = new SqliteConnection($"Data Source={dbPath}"))
@@ -198,7 +236,21 @@ namespace SchoolSystem.Repositories
                 using (var command = new SqliteCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", studentId);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqliteException ex)
+                    {
+                        if (ex.SqliteErrorCode == 19) // foreign key constraint failed
+                        {
+                            throw new InvalidOperationException("Nie można usunąć ucznia, ponieważ jest powiązany z innymi danymi (np. oceny, frekwencja).", ex);
+                        }
+                        else
+                        {
+                            throw; // inne błędy
+                        }
+                    }
                 }
             }
         }

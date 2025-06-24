@@ -120,6 +120,17 @@ namespace SchoolSystem.ViewModel
                 MessageBox.Show("Login nie może być pusty.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            if (_studentRepository.StudentExistsByPESEL(PESEL))
+            {
+                MessageBox.Show("Uczeń z takim numerem PESEL już istnieje.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (_studentRepository.StudentExistsByLogin(Login))
+            {
+                MessageBox.Show("Login jest już zajęty.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             if (string.IsNullOrEmpty(Password))
             {

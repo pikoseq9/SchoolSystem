@@ -33,7 +33,7 @@
             <ComboBox Width="200"
                       ItemsSource="{Binding AvailableTeachers}"
                       SelectedItem="{Binding SelectedTeacher, Mode=TwoWay}"
-                      DisplayMemberPath="FullName" Style="{StaticResource BoxComboBox}"/>
+                      DisplayMemberPath="FullName"/>
         </StackPanel>
 
         <!-- Przyciski -->

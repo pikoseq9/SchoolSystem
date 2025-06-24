@@ -132,12 +132,23 @@ namespace SchoolSystem.ViewModel
 
         private void DeleteClass()
         {
-            if (SelectedClass == null) return;
+            if (SelectedClass == null)
+                return;
 
-            if (MessageBox.Show($"Usunąć klasę {SelectedClass.Code}?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Czy na pewno chcesz usunąć klasę {SelectedClass.Code}?",
+                "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                _classRepository.DeleteClass(SelectedClass.Id); // Upewnij się, że masz taką metodę
-                Classes.Remove(SelectedClass);
+                bool deleted = _classRepository.DeleteClass(SelectedClass.Id);
+
+                if (deleted)
+                {
+                    Classes.Remove(SelectedClass);
+                }
+                else
+                {
+                    MessageBox.Show("Nie można usunąć klasy, ponieważ są do niej przypisani uczniowie.",
+                        "Błąd usuwania", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

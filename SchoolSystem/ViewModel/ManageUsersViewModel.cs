@@ -157,8 +157,16 @@ namespace SchoolSystem.ViewModel
             if (MessageBox.Show($"Usunąć ucznia {SelectedStudent.Name} {SelectedStudent.SurName}?",
                 "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                _studentRepository.DeleteStudent(SelectedStudent.Id);
-                Students.Remove(SelectedStudent);
+                try
+                {
+                    _studentRepository.DeleteStudent(SelectedStudent.Id);
+                    Students.Remove(SelectedStudent);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Nie można usunąć ucznia, ponieważ istnieją powiązane dane (np. oceny, frekwencje).",
+                        "Błąd usuwania", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 

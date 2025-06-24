@@ -145,19 +145,54 @@ namespace SchoolSystem.Repositories
                 }
             }
         }
+        public bool ClassCodeExists(string code)
+        {
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                string query = "SELECT COUNT(*) FROM Klasy WHERE Kod = @Code";
 
-        public void DeleteClass(int classId)
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Code", code);
+                    long count = (long)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        public bool CanDeleteClass(int classId)
         {
             using (var connection = new SqliteConnection($"Data Source={dbPath}"))
             {
                 connection.Open();
 
+                string query = "SELECT COUNT(*) FROM Uczniowie WHERE Klasa_ID = @ClassId";
+
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ClassId", classId);
+                    long count = (long)command.ExecuteScalar();
+                    return count == 0; // można usunąć tylko jeśli brak uczniów
+                }
+            }
+        }
+
+        public bool DeleteClass(int classId)
+        {
+            if (!CanDeleteClass(classId))
+                return false;
+
+            using (var connection = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
                 string query = "DELETE FROM Klasy WHERE ID_Klasa = @Id";
 
                 using (var command = new SqliteCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", classId);
                     command.ExecuteNonQuery();
+                    return true;
                 }
             }
         }
