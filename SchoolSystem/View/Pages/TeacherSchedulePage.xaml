@@ -134,6 +134,7 @@
                                                 <TextBlock Text="{Binding SubjectName}" FontWeight="Bold"/>
                                                 <TextBlock Text="{Binding TeacherName}" FontSize="11"/>
                                                 <TextBlock Text="{Binding RoomName}" FontSize="10" Foreground="Gray"/>
+                                                <!--<TextBlock Text="{Binding StartTime}" FontSize="10" Foreground="Gray"/>-->
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>

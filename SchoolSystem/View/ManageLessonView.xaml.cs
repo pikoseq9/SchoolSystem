@@ -10,24 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SchoolSystem.View
 {
     /// <summary>
-    /// Logika interakcji dla klasy AddLessonWindow.xaml
+    /// Logika interakcji dla klasy ManageLessonView.xaml
     /// </summary>
-    public partial class AddLessonWindow : Window
+    public partial class ManageLessonView : UserControl
     {
-        public AddLessonWindow()
+        public ManageLessonView()
         {
             InitializeComponent();
-        }
-
-        public AddLessonWindow(int teacherId, int classId)
-        {
-            InitializeComponent();
-            DataContext = new AddLessonViewModel(teacherId, classId);
         }
     }
 }
