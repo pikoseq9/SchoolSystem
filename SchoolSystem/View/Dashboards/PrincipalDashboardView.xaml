@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <!-- Przyciski wyboru widoku -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="0">
             <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
             <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
             <Button Content="Klasy" Command="{Binding ShowManageClassCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
