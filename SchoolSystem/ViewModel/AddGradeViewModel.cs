@@ -30,7 +30,7 @@ public class AddGradeViewModel : BaseViewModel
         var repo = new SubjectRepository();
         Subjects = repo.GetAllSubjects();
 
-        SelectedSubject = Subjects.FirstOrDefault(); // opcjonalnie domyślny wybór
+        SelectedSubject = Subjects.FirstOrDefault();
 
         ConfirmCommand = new RelayCommand(_ => Confirm());
     }

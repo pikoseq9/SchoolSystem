@@ -41,7 +41,7 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        public RemarkViewModel() : this(0) // Calls the parameterized constructor with a default ID (0 or -1, something invalid)
+        public RemarkViewModel() : this(0) 
         {
         }
     }

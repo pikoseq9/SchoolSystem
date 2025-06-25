@@ -24,7 +24,7 @@ namespace SchoolSystem.ViewModel
             {
                 _selectedClass = value;
                 OnPropertyChanged(nameof(SelectedClass));
-                LoadLessons(); // załaduj plan po zmianie klasy
+                LoadLessons(); 
             }
         }
 
@@ -74,7 +74,7 @@ namespace SchoolSystem.ViewModel
             var window = new AddLessonWindow(0, SelectedClass.Id);
 
             window.ShowDialog();
-            LoadLessons(); // odśwież plan
+            LoadLessons(); 
         }
 
         private void DeleteLesson(int lessonId)

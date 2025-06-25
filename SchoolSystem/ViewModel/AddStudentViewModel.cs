@@ -16,7 +16,6 @@ namespace SchoolSystem.ViewModel
         private StudentRepository _studentRepository = new StudentRepository();
         private ClassRepository _classRepository = new ClassRepository();
 
-        // Kolekcja klas do wyboru w UI
         public ObservableCollection<Class> AvailableClasses { get; } = new ObservableCollection<Class>();
 
         private Class _selectedClass;
@@ -26,7 +25,6 @@ namespace SchoolSystem.ViewModel
             set { _selectedClass = value; OnPropertyChanged(nameof(SelectedClass)); }
         }
 
-        // Dane studenta
         public string Name
         {
             get => _student.Name;
@@ -63,7 +61,6 @@ namespace SchoolSystem.ViewModel
             set { _student.Password = value; OnPropertyChanged(nameof(Password)); }
         }
 
-        // Komendy
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -82,14 +79,13 @@ namespace SchoolSystem.ViewModel
             foreach (var c in classes)
                 AvailableClasses.Add(c);
 
-            // Opcjonalnie ustaw domyślnie pierwszą klasę
             if (AvailableClasses.Count > 0)
                 SelectedClass = AvailableClasses[0];
         }
 
         private void Save()
         {
-            // Walidacja pól, możesz rozszerzyć o inne
+
             if (string.IsNullOrWhiteSpace(Name) || !Name.All(char.IsLetter))
             {
                 MessageBox.Show("Imię musi być wypełnione i zawierać tylko litery.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -141,7 +137,6 @@ namespace SchoolSystem.ViewModel
             var hashedPassword = PasswordHelper.HashPassword(Password);
             _student.Password = hashedPassword;
 
-            // Przypisujemy ID klasy wybranej przez użytkownika
             _student.ClassID = SelectedClass.Id;
 
             _studentRepository.AddStudent(_student);

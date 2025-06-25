@@ -75,7 +75,7 @@ namespace SchoolSystem.ViewModel
         public EditStudentViewModel(Student student)
         {
             _student = student;
-            _studentRepository = new StudentRepository();  // tutaj tworzysz instancję repozytorium
+            _studentRepository = new StudentRepository(); 
 
             SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Cancel);

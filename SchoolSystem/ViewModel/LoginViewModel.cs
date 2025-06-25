@@ -55,7 +55,7 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        private string _password; // W ViewModelu lepiej przechowywać hasło w bezpieczny sposób, ale dla testów...
+        private string _password; 
         public string Password
         {
             get => _password;
@@ -86,7 +86,6 @@ namespace SchoolSystem.ViewModel
           
         }
 
-        // Metoda wykonywana po kliknięciu przycisku Zaloguj
         private void ExecuteLogin(object _)
         {
             string passwordFromView = Password;
@@ -144,7 +143,6 @@ namespace SchoolSystem.ViewModel
             }
         }
 
-        //Metoda sprawdzająca, czy przycisk Zaloguj powinien być aktywny
         private bool CanExecuteLogin(object _)
         {
             return !string.IsNullOrWhiteSpace(Username) &&

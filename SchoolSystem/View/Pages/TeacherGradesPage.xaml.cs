@@ -24,7 +24,6 @@ namespace SchoolSystem.View.Pages
         public TeacherGradesPage()
         {
             InitializeComponent();
-            //this.DataContext = new TeacherGradesViewModel();
         }
     }
 }

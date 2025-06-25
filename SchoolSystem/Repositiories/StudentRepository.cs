@@ -242,13 +242,13 @@ namespace SchoolSystem.Repositories
                     }
                     catch (SqliteException ex)
                     {
-                        if (ex.SqliteErrorCode == 19) // foreign key constraint failed
+                        if (ex.SqliteErrorCode == 19) 
                         {
                             throw new InvalidOperationException("Nie można usunąć ucznia, ponieważ jest powiązany z innymi danymi (np. oceny, frekwencja).", ex);
                         }
                         else
                         {
-                            throw; // inne błędy
+                            throw; 
                         }
                     }
                 }

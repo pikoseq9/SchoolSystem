@@ -37,9 +37,6 @@ public class AddLessonViewModel : INotifyPropertyChanged
         _classId = classId;
         _scheduleRepo = new ScheduleRepository();
 
-
-
-        // Tu możesz wczytać listy
         Subjects = new ObservableCollection<Subject>(new SubjectRepository().GetAllSubjects());
         Rooms = new ObservableCollection<Room>(new RoomRepository().GetAllRooms());
         DaysOfWeek = new ObservableCollection<string> { "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek" };
@@ -54,28 +51,24 @@ public class AddLessonViewModel : INotifyPropertyChanged
 
     private void SaveLesson()
     {
-        // Walidacja: czy wszystkie pola są wybrane / wypełnione
         if (SelectedSubject == null || SelectedRoom == null || string.IsNullOrWhiteSpace(SelectedDay) || string.IsNullOrWhiteSpace(StartTime))
         {
             MessageBox.Show("Wszystkie pola muszą być wypełnione!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
-        // Walidacja formatu godziny
         if (!TimeSpan.TryParse(StartTime, out TimeSpan parsedStartTime))
         {
             MessageBox.Show("Godzina rozpoczęcia musi być w formacie HH:mm (np. 08:00)", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
-        // Walidacja czasu trwania
         if (Duration <= 0)
         {
             MessageBox.Show("Czas trwania musi być większy od 0 minut.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
-        // Sprawdzenie kolizji
         bool overlapping = _scheduleRepo.IsLessonOverlapping(
             classId: _classId,
             dayOfWeek: SelectedDay,
@@ -89,7 +82,6 @@ public class AddLessonViewModel : INotifyPropertyChanged
             return;
         }
 
-        // Tworzenie lekcji
         var lesson = new Lesson(
             id: 0,
             roomID: SelectedRoom.ID,
@@ -101,7 +93,6 @@ public class AddLessonViewModel : INotifyPropertyChanged
             duration: Duration
         );
 
-        // Zapis do bazy
         _scheduleRepo.AddLesson(lesson);
         MessageBox.Show("Lekcja dodana pomyślnie!", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
         CloseWindow();

@@ -7,7 +7,6 @@ namespace SchoolSystem.Model
 {
     public class Schedule
     {
-        //public ObservableCollection<LessonDisplay> Lessons { get; set; }
 
         
     }

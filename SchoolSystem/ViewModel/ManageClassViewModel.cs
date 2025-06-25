@@ -116,7 +116,7 @@ namespace SchoolSystem.ViewModel
             {
                 if (e)
                 {
-                    _classRepository.UpdateClass(SelectedClass); // Upewnij się, że masz taką metodę
+                    _classRepository.UpdateClass(SelectedClass); 
                 }
                 window.DialogResult = e;
                 window.Close();

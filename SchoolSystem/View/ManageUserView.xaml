@@ -20,7 +20,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Sekcja listy uczniów i przycisków -->
         <StackPanel Grid.Row="0" Visibility="{Binding IsStudentListVisible, Converter={StaticResource BoolToVis}}">
             <ListView ItemsSource="{Binding Students}"
                       SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
@@ -47,7 +46,6 @@
             </StackPanel>
         </StackPanel>
 
-        <!-- Podwidok (oceny/uwagi) -->
         <Grid Grid.Row="0" Visibility="{Binding IsDetailViewVisible, Converter={StaticResource BoolToVis}}">
             <Button Content="← Wróć do listy" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,10"
                     Command="{Binding CloseDetailViewCommand}" Width="140" Style="{StaticResource NavButtonStyle}"/>

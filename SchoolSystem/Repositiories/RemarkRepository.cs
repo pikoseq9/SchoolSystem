@@ -16,9 +16,6 @@ namespace SchoolSystem.Repositories
             _teacherRepository = teacherRepository ?? new TeacherRepository();
         }
 
-        /// <summary>
-        /// Pobiera uwagi z bazy danych z użyciem JOIN (szybko, bez zewnętrznego repozytorium)
-        /// </summary>
         public ObservableCollection<Remark> GetRemarksWithTeacherName(int studentId)
         {
             var remarks = new ObservableCollection<Remark>();
@@ -49,9 +46,6 @@ namespace SchoolSystem.Repositories
             return remarks;
         }
 
-        /// <summary>
-        /// Alternatywna wersja: Pobiera uwagi z repozytorium nauczyciela (gdy potrzebujesz jego klasy lub danych kontaktowych itp.)
-        /// </summary>
         public ObservableCollection<Remark> GetAllRemarksByStudentId(int studentId)
         {
             var remarks = new ObservableCollection<Remark>();

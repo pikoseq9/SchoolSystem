@@ -15,7 +15,6 @@ namespace SchoolSystem.ViewModel
 
         private TeacherRepository _teacherRepository = new TeacherRepository();
 
-        // Dane studenta
         public string Name
         {
             get => _teacher.Name;
@@ -52,7 +51,6 @@ namespace SchoolSystem.ViewModel
             set { _teacher.Password = value; OnPropertyChanged(nameof(Password)); }
         }
 
-        // Komendy
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -65,7 +63,6 @@ namespace SchoolSystem.ViewModel
 
         private void Save()
         {
-            // Walidacja pól, możesz rozszerzyć o inne
             if (string.IsNullOrWhiteSpace(Name) || !Name.All(char.IsLetter))
             {
                 MessageBox.Show("Imię musi być wypełnione i zawierać tylko litery.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);

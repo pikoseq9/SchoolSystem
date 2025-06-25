@@ -18,13 +18,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Kod klasy -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
             <Label Content="Kod klasy:" Width="100"/>
             <TextBox Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
         </StackPanel>
 
-        <!-- Wychowawca -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
             <Label Content="Wychowawca:" Width="100"/>
             <ComboBox Width="200"
@@ -33,7 +31,6 @@
                       DisplayMemberPath="FullName"/>
         </StackPanel>
 
-        <!-- Przyciski -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Zapisz" Width="80" Margin="5,0" Command="{Binding SaveCommand}" Style="{StaticResource NavButtonStyle}"/>
             <Button Content="Anuluj" Width="80" Margin="5,0" Command="{Binding CancelCommand}" Style="{StaticResource NavButtonStyle}"/>

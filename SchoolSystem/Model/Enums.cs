@@ -8,7 +8,6 @@ namespace SchoolSystem.Model
 {
     public static class Enums
     {
-        //np. typy użytkownika, ocen itp
         public enum UserType
         {
             Principal,

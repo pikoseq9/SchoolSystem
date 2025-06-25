@@ -34,33 +34,20 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _selectedStudent = value;
-                OnPropertyChanged(); // upewnij się, że używasz BaseViewModel z OnPropertyChanged()
+                OnPropertyChanged(); 
             }
         }
 
         public StudentListViewModel()
         {
 
-            //_studentrepository = new StudentRepository();
-            //_students = new ObservableCollection<Student>();
 
-
-
-            //try
-            //{
-            //    _students.Clear();
-            //    _students = _studentrepository.GetAllStudents();
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"Wystąpił błąd podczas ładowania uczniow: {ex.Message}");
-            //}
 
             _studentrepository = new StudentRepository();
 
             try
             {
-                Students = _studentrepository.GetAllStudents(); // użyj właściwości z OnPropertyChanged
+                Students = _studentrepository.GetAllStudents(); 
             }
             catch (Exception ex)
             {

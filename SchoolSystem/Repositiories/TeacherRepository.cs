@@ -50,7 +50,6 @@ namespace SchoolSystem.Repositories
                 }
                 catch (Exception ex)
                 {
-                    // Obsługa innych, ogólnych błędów
                     Console.WriteLine($"Wystąpił nieoczekiwany błąd: {ex.Message}");
                     throw new Exception("Wystąpił nieoczekiwany błąd podczas pobierania danych nauczycieli.", ex);
                 }

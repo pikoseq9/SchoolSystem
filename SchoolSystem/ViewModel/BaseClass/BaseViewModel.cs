@@ -12,15 +12,9 @@ namespace SchoolSystem.ViewModel.BaseClass
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //public void OnPropertyChanged(params string[] properties)
-        //{
-        //    if (PropertyChanged != null)
-        //        foreach (var property in properties)
-        //            PropertyChanged(this, new PropertyChangedEventArgs(property));
-        //}
     
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) //test czy działa 
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) 
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

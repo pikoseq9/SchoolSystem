@@ -33,7 +33,7 @@ namespace SchoolSystem.ViewModel
             {
                 _selectedSubject = value;
                 OnPropertyChanged(nameof(SelectedSubject));
-                CommandManager.InvalidateRequerySuggested(); // Aktualizacja dostępności komend
+                CommandManager.InvalidateRequerySuggested(); 
             }
         }
 
@@ -91,7 +91,6 @@ namespace SchoolSystem.ViewModel
         {
             if (SelectedSubject == null) return;
 
-            // Pobierz świeże dane przedmiotu (opcjonalnie)
             var subjectFromDb = _subjectRepository.GetSubjectById(SelectedSubject.Id);
             if (subjectFromDb == null)
             {

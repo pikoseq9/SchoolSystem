@@ -14,7 +14,6 @@ namespace SchoolSystem.Model
         public int SubjectID { get; set; }
         public int ClassID { get; set; }
         public int TeacherID { get; set; }
-        //Zmiany wynikające ze zmian w bazie danych 
         public string DayOfWeek { get; set; }           
         public string StartTime { get; set; }           
         public int Duration { get; set; }

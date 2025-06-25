@@ -49,7 +49,7 @@ namespace SchoolSystem.ViewModel
 
         private void OpenAddLessonWindow()
         {
-            var teacherId = Session.CurrentTeacher.Id; // <- Upewnij się, że masz go w VM
+            var teacherId = Session.CurrentTeacher.Id;
             var teacherClass = _classRepository.GetAllClasses()
                                                .FirstOrDefault(k => k.ClassTeacherID == teacherId);
             if (teacherClass == null)
@@ -64,7 +64,7 @@ namespace SchoolSystem.ViewModel
             };
             window.ShowDialog();
 
-            LoadLessonsForTeacherClass(teacherId); // Odśwież
+            LoadLessonsForTeacherClass(teacherId);
         }
 
         private void DeleteLesson(int lessonId)
@@ -79,13 +79,13 @@ namespace SchoolSystem.ViewModel
 
         private void LoadLessonsForTeacherClass(int teacherId)
         {
-            // Znajdź klasę, której nauczyciel jest wychowawcą
+            
             var teacherClass = _classRepository.GetAllClasses()
                                                .FirstOrDefault(k => k.ClassTeacherID == teacherId);
 
             if (teacherClass == null)
             {
-                // Obsłuż brak przypisanej klasy
+                
                 LessonsDisplay = new ObservableCollection<LessonDisplay>();
                 return;
             }

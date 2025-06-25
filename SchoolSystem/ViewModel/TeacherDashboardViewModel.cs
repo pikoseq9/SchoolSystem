@@ -22,11 +22,11 @@ namespace SchoolSystem.ViewModel
             set
             {
                 _currentTeacherDetailViewModel = value;
-                OnPropertyChanged(); // Powiadom UI o zmianie
+                OnPropertyChanged(); 
             }
         }
 
-        // Komendy, które będą wywoływane przez przyciski w StudentDashboardView.xaml
+        
         public ICommand NavigateToStudentListCommand { get; }
         public ICommand NavigateToTeacherRemarksComand { get; }
         public ICommand NavigateToTeacherGradesComand { get; }
@@ -34,8 +34,7 @@ namespace SchoolSystem.ViewModel
 
         public TeacherDashboardViewModel()
         {
-            // Inicjalizacja komend przy użyciu RelayCommand
-            // Zauważ, że konstruktor RelayCommand przyjmujący Action bez parametru jest używany
+            
             _studentListViewModel = new StudentListViewModel();
 
             NavigateToStudentListCommand = new RelayCommand(NavigateToStudentList);
@@ -44,14 +43,14 @@ namespace SchoolSystem.ViewModel
             NavigateToTeacherLessonsListCommand = new RelayCommand(NavigateToTeacherLessonsList);
 
 
-            // Ustaw domyślny widok przy załadowaniu StudentDashboardView (np. Oceny)
+            
             NavigateToStudentList();
         }
 
-        // Metody wywoływane przez komendy, które zmieniają aktualny pod-ViewModel
+        
         private void NavigateToStudentList()
         {
-            //CurrentTeacherDetailViewModel = new StudentListViewModel();
+            
             IsScheduleViewVisible = true;
             CurrentTeacherDetailViewModel = _studentListViewModel;
 
@@ -59,7 +58,7 @@ namespace SchoolSystem.ViewModel
 
         private void NavigateToTeacherLessonsList()
         {
-            int teacherId = Session.CurrentTeacher.Id; // <-- lub inny sposób na ID nauczyciela
+            int teacherId = Session.CurrentTeacher.Id; 
             IsScheduleViewVisible = false;
             var page = new TeacherSchedulePage();
             page.DataContext = new TeacherScheduleViewModel(teacherId);
@@ -87,7 +86,7 @@ namespace SchoolSystem.ViewModel
             {
                 int studentId = _studentListViewModel.SelectedStudent.Id;
                 CurrentTeacherDetailViewModel = new TeacherGradesViewModel(studentId);
-                //CurrentTeacherDetailViewModel = new TeacherGradesViewModel();
+                
             }
             else
             {

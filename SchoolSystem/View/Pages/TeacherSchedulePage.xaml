@@ -7,19 +7,16 @@
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <!-- Dwa wiersze: plan + przycisk -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <Grid Background="White" Margin="20">
-            <!-- Nagłówki dni tygodnia -->
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <!-- na godziny -->
-                <ColumnDefinition Width="*"/>
+            <Grid Background="White" Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -27,9 +24,8 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <!-- nagłówek dni -->
-                <RowDefinition Height="60" />
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="60" />
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="60"/>
@@ -40,9 +36,6 @@
             </Grid.RowDefinitions>
             <Border Grid.Row="0" Grid.Column="0" Background="#607D8B"/>
 
-
-
-            <!-- Nagłówki dni -->
             <Border Grid.Row="0" Grid.Column="1" Background="#607D8B">
                 <TextBlock Text="Poniedziałek" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
             </Border>
@@ -63,7 +56,6 @@
                 <TextBlock Text="Piątek" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
             </Border>
 
-            <!-- Godziny po lewej -->
             <TextBlock Grid.Row="1" Grid.Column="0" Text="08:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="09:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="3" Grid.Column="0" Text="10:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -73,16 +65,14 @@
             <TextBlock Grid.Row="7" Grid.Column="0" Text="14:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="8" Grid.Column="0" Text="15:00" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <!-- ItemsControl z lekcjami -->
             <ItemsControl ItemsSource="{Binding LessonsDisplay}"
                       Grid.Row="1" Grid.RowSpan="8"
                       Grid.Column="1" Grid.ColumnSpan="5">
 
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Grid IsItemsHost="True">
-                            <!-- 5 kolumn dla dni -->
-                            <Grid.ColumnDefinitions>
+                            <Grid IsItemsHost="True">
+                                <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -90,7 +80,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- 8 wierszy dla godzin -->
+
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="60"/>
                                 <RowDefinition Height="60"/>
@@ -112,17 +102,7 @@
                     </Style>
                 </ItemsControl.ItemContainerStyle>
 
-                <!--<ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="#d5dee2" CornerRadius="5" Padding="5" Margin="3" BorderBrush="LightSteelBlue" BorderThickness="1">
-                            <StackPanel>
-                                <TextBlock Text="{Binding SubjectName}" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding TeacherName}" FontSize="11"/>
-                                <TextBlock Text="{Binding RoomName}" FontSize="10" Foreground="Gray"/>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>-->
+               
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -134,7 +114,6 @@
                                                 <TextBlock Text="{Binding SubjectName}" FontWeight="Bold"/>
                                                 <TextBlock Text="{Binding TeacherName}" FontSize="11"/>
                                                 <TextBlock Text="{Binding RoomName}" FontSize="10" Foreground="Gray"/>
-                                                <!--<TextBlock Text="{Binding StartTime}" FontSize="10" Foreground="Gray"/>-->
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>

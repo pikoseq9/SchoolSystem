@@ -25,7 +25,6 @@ namespace SchoolSystem.ViewModel
         public EditRoomViewModel(Room room)
         {
             _originalRoom = room;
-            // Tworzymy kopię roboczą
             _editingRoom = new Room(room.ID, room.Number);
 
             _roomRepository = new RoomRepository();
@@ -42,10 +41,8 @@ namespace SchoolSystem.ViewModel
                 return;
             }
 
-            // Aktualizujemy oryginalny obiekt
             _originalRoom.Number = _editingRoom.Number;
 
-            // Zapisujemy do bazy
             _roomRepository.UpdateRoom(_originalRoom);
 
             CloseRequested?.Invoke(this, true);

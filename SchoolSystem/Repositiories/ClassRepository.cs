@@ -173,7 +173,7 @@ namespace SchoolSystem.Repositories
                 {
                     command.Parameters.AddWithValue("@ClassId", classId);
                     long count = (long)command.ExecuteScalar();
-                    return count == 0; // można usunąć tylko jeśli brak uczniów
+                    return count == 0;
                 }
             }
         }

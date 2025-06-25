@@ -34,7 +34,6 @@ namespace SchoolSystem.ViewModel
                 _selectedGrade = value;
                 OnPropertyChanged(nameof(SelectedGrade));
 
-                // Bezpiecznie od razu po inicjalizacji
                 if (DeleteGradeCommand is RelayCommand relay)
                     relay.RaiseCanExecuteChanged();
             }

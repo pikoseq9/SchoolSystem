@@ -18,15 +18,11 @@
 
     <Grid>
 
-        <!-- Dodajemy dwa wiersze: górny na przyciski, dolny na zawartość -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Górny pasek -->
             <RowDefinition Height="*"/>
-            <!-- Reszta na zawartość -->
         </Grid.RowDefinitions>
 
-        <!-- Przyciski wyboru widoku -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="0">
             <Button Content="Uczniowie" Command="{Binding ShowManageUsersCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
             <Button Content="Nauczyciele" Command="{Binding ShowManageTeachersCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
@@ -36,7 +32,6 @@
             <Button Content="Plany" Command="{Binding ShowManageLessonCommand}" Margin="3" Width="auto" Style="{StaticResource NavButtonStyle}" />
         </StackPanel>
 
-        <!-- Dynamiczna zawartość zależna od wybranego widoku -->
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type vm:ManageUsersViewModel}">

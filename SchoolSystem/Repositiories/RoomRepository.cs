@@ -122,7 +122,6 @@ namespace SchoolSystem.Repositories
             command.ExecuteNonQuery();
         }
 
-        // Sprawdzenie, czy można usunąć salę (np. brak powiązań z lekcjami)
         public bool CanDeleteRoom(int roomId)
         {
             using var connection = new SqliteConnection($"Data Source={dbPath}");
@@ -135,7 +134,7 @@ namespace SchoolSystem.Repositories
 
             long count = (long)command.ExecuteScalar();
 
-            return count == 0; // można usunąć jeśli brak powiązań
+            return count == 0;
         }
 
         public bool RoomNumberExists(string number)

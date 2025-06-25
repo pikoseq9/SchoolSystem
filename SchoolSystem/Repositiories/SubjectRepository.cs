@@ -11,9 +11,6 @@ namespace SchoolSystem.Repositories
     {
         private readonly string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "szkola.db");
 
-        /// <summary>
-        /// Dla prostego użycia w logice biznesowej
-        /// </summary>
         public List<Subject> GetAllSubjectsAsList()
         {
             var subjects = new List<Subject>();
@@ -44,9 +41,6 @@ namespace SchoolSystem.Repositories
             return subjects;
         }
 
-        /// <summary>
-        /// Dla powiązań z interfejsem (np. ComboBox w MVVM)
-        /// </summary>
         public ObservableCollection<Subject> GetAllSubjects()
         {
             var list = new ObservableCollection<Subject>();
@@ -134,7 +128,6 @@ namespace SchoolSystem.Repositories
             using var connection = new SqliteConnection($"Data Source={dbPath}");
             connection.Open();
 
-            // Przykład - zakładam, że tabela Lekcje ma kolumnę Przedmiot_ID
             string query = "SELECT COUNT(*) FROM Lekcje WHERE Przedmiot_ID = @SubjectId";
 
             using var command = new SqliteCommand(query, connection);
@@ -142,7 +135,7 @@ namespace SchoolSystem.Repositories
 
             long count = (long)command.ExecuteScalar();
 
-            return count == 0; // można usunąć, jeśli brak powiązań
+            return count == 0;
         }
 
         public bool SubjectNameExistsExceptId(string name, int id)
@@ -166,7 +159,7 @@ namespace SchoolSystem.Repositories
             using var connection = new SqliteConnection($"Data Source={dbPath}");
             connection.Open();
 
-            string query = "SELECT COUNT(*) FROM Przedmioty WHERE Nazwa = @Name"; // zmień na właściwą nazwę tabeli i kolumny
+            string query = "SELECT COUNT(*) FROM Przedmioty WHERE Nazwa = @Name";
 
             using var command = new SqliteCommand(query, connection);
             command.Parameters.AddWithValue("@Name", name);
