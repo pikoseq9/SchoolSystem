@@ -25,8 +25,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="Logowanie"
-            Command="{Binding ShowLoginPageCommand}"
+        <Button Content="{Binding LoginButtonText}"
+            Command="{Binding ToggleLoginLogoutCommand}"
             Width="100" Height="40"
             Style="{StaticResource NavButtonStyle}" Margin="5"/>
 
